@@ -27,7 +27,7 @@ const EnterLifeSatisfactionStep = ({ onNext }: PropsWithOnNext) => {
     <div className="flex flex-col items-center gap-4">
       <AppBar>
         <AppBarBack />
-        <AppBarTitle>우모어 · 우리는 모두 어린이였다</AppBarTitle>
+        <AppBarTitle>우모어</AppBarTitle>
       </AppBar>
       <div className="flex w-full flex-col items-start gap-8 pt-14">
         <div className="mt-4 flex flex-col gap-4">
@@ -40,16 +40,17 @@ const EnterLifeSatisfactionStep = ({ onNext }: PropsWithOnNext) => {
           control={control}
           name={FORM_NAME.LIFE_SATISFACTION}
           render={({ field }) => (
-            <FormItem className="flex w-full flex-col gap-1.5">
+            <FormItem className="flex w-full flex-col">
               <FormLabel
                 htmlFor={FORM_ID.LIFE_SATISFACTION}
-                className="text-xs text-white"
+                className="text-sm text-white"
               >
                 만족도
               </FormLabel>
               <FormControl>
                 <Input
                   type="number"
+                  inputMode="numeric"
                   id={FORM_ID.LIFE_SATISFACTION}
                   min="1"
                   max="10"

@@ -22,12 +22,7 @@ const RootLayout = ({ children }: PropsWithChildren) => {
   return (
     <html lang="ko-KR">
       <QueryProvider>
-        <body
-          className={cn(
-            wantedSansVariable.className,
-            'bg-gradient-to-r from-orange-500 to-red-500 text-white',
-          )}
-        >
+        <body className={cn(wantedSansVariable.className, 'bg-neutral-100')}>
           {/* FIXME: need to remove Suspense */}
           <Suspense>{children}</Suspense>
         </body>

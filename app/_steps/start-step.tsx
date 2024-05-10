@@ -26,8 +26,8 @@ const StartStep = ({ onNext }: PropsWithOnNext) => {
         className="my-10"
       />
       <div className="text-center">
-        <p>5월 가정의 달을 맞아 소소한 설문 하나를 준비해봤어요 ✨</p>
-        <p>설문은 3분 정도 소요되며, 익명으로 진행됩니다.</p>
+        <p>5월 가정의 달을 맞아 설문 하나를 준비해봤어요 ✨</p>
+        <p>3분 정도 소요되며, 익명으로 진행됩니다.</p>
       </div>
       <Button
         variant="secondary"

@@ -27,7 +27,7 @@ const EnterChildhoodDreamStep = ({ onNext }: PropsWithOnNext) => {
     <div className="flex flex-col items-center gap-4">
       <AppBar>
         <AppBarBack />
-        <AppBarTitle>우모어 · 우리는 모두 어린이였다</AppBarTitle>
+        <AppBarTitle>우모어</AppBarTitle>
       </AppBar>
       <div className="flex w-full flex-col items-start gap-8 pt-14">
         <div className="mt-4 flex flex-col gap-4">
@@ -40,10 +40,10 @@ const EnterChildhoodDreamStep = ({ onNext }: PropsWithOnNext) => {
           control={control}
           name={FORM_NAME.CHILDHOOD_DREAM}
           render={({ field }) => (
-            <FormItem className="flex w-full flex-col gap-1.5">
+            <FormItem className="flex w-full flex-col">
               <FormLabel
                 htmlFor={FORM_ID.CHILDHOOD_DREAM}
-                className="text-xs text-white"
+                className="text-sm text-white"
               >
                 어릴적 꿈
               </FormLabel>

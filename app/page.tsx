@@ -20,7 +20,7 @@ import SubmitStep from '@/app/_steps/submit-step';
 import { HookFormDevTool__Csr } from '@/components/etc/HookFormDevTool__Csr';
 import { ROUTES } from '@/constants/routes';
 import { SEARCH_PARAMS } from '@/constants/search-params';
-import { noop } from '@/lib/utils';
+import { cn, noop } from '@/lib/utils';
 
 enum Step {
   Start = 'start',
@@ -117,7 +117,12 @@ const RootPage = () => {
   );
 
   return (
-    <main className="mx-auto min-h-dvh max-w-lg">
+    <main
+      className={cn(
+        'mx-auto min-h-dvh max-w-lg',
+        'bg-gradient-to-r from-orange-500 to-red-500 text-white',
+      )}
+    >
       <FormProvider {...methods}>
         <HookFormDevTool__Csr control={methods.control} />
         <form onSubmit={methods.handleSubmit(onSubmit)}>
