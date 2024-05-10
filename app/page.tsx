@@ -18,7 +18,9 @@ import EnterMostImportantValueStep from '@/app/_steps/enter-most-important-value
 import StartStep from '@/app/_steps/start-step';
 import SubmitStep from '@/app/_steps/submit-step';
 import { HookFormDevTool__Csr } from '@/components/etc/HookFormDevTool__Csr';
+import { ROUTES } from '@/constants/routes';
 import { SEARCH_PARAMS } from '@/constants/search-params';
+import { noop } from '@/lib/utils';
 
 enum Step {
   Start = 'start',
@@ -80,13 +82,16 @@ const RootPage = () => {
   const searchParams = useSearchParams();
   const methods = useForm<InferredFormSchema>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      /* i want not to use default values */
-    },
   });
 
   const onSubmit = (values: InferredFormSchema) => {
-    console.log(values); /* FIXME: why not working? */
+    /* TODO: send data to server */
+    alert(JSON.stringify(values));
+
+    methods.reset();
+
+    /* TODO: make a result page */
+    router.push(ROUTES.ROOT);
   };
 
   const step = searchParams.get(SEARCH_PARAMS.FUNNEL_STEP) ?? initialStep;
@@ -149,13 +154,7 @@ const RootPage = () => {
             {step === Step.EnterEmail && (
               <EnterEmailStep onNext={() => moveStep(Step.Submit)} />
             )}
-            {step === Step.Submit && (
-              <SubmitStep
-                onNext={() => {
-                  moveStep(Step.Start); /* TODO: make a done page */
-                }}
-              />
-            )}
+            {step === Step.Submit && <SubmitStep onNext={noop} />}
           </div>
         </form>
       </FormProvider>
