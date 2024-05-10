@@ -9,7 +9,7 @@ interface FormLayoutProps {
 }
 
 export function FormLayout({
-  item: { question, description, answer },
+  item: { question, description },
   step,
 }: FormLayoutProps) {
   return (
@@ -20,7 +20,6 @@ export function FormLayout({
           {question}
         </h1>
         <Paragraphs text={description} />
-        <div></div>
       </section>
       <section className="p-3.5">
         <NextButton step={step} />
