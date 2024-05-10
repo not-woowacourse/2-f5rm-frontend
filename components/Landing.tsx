@@ -1,5 +1,5 @@
-import { NextButton } from '@/components/NextButton';
 import { Paragraphs } from '@/components/Paragraphs';
+import { StartButton } from '@/components/StartButton';
 import { metadata } from '@/constants/metadata';
 
 export function Landing() {
@@ -12,7 +12,7 @@ export function Landing() {
         <Paragraphs text={metadata.description} />
       </section>
       <section className="p-3.5">
-        <NextButton step={-1} />
+        <StartButton />
       </section>
     </div>
   );
