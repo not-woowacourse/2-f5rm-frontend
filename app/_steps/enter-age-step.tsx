@@ -19,7 +19,9 @@ import { FORM_ID, FORM_NAME } from '@/constants/form';
 import { type PropsWithOnNext } from '@/types/props';
 
 const EnterAgeStep = ({ onNext }: PropsWithOnNext) => {
-  const { control } = useFormContext();
+  const { control, getFieldState } = useFormContext();
+
+  const { invalid } = getFieldState(FORM_NAME.AGE);
 
   return (
     <div className="flex flex-col items-center gap-4">
@@ -59,6 +61,7 @@ const EnterAgeStep = ({ onNext }: PropsWithOnNext) => {
         type="button"
         variant="secondary"
         onClick={onNext}
+        disabled={invalid}
         className="fixed inset-x-0 bottom-4 mx-auto w-full max-w-[calc(100vw-2rem)] sm:max-w-[calc(512px-2rem)]"
       >
         <ChevronRight className="mr-2 h-5 w-5" />

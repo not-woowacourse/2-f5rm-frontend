@@ -32,15 +32,44 @@ enum Step {
   Submit = 'submit',
 }
 
+const gender = ['female', 'male', 'etc'] as const;
+
+const mbti = [
+  'INTJ',
+  'INTP',
+  'ENTJ',
+  'ENTP',
+  'INFJ',
+  'INFP',
+  'ENFJ',
+  'ENFP',
+  'ISTJ',
+  'ISFJ',
+  'ESTJ',
+  'ESFJ',
+  'ISTP',
+  'ISFP',
+  'ESTP',
+  'ESFP',
+] as const;
+
+const mostImportantValue = [
+  'money',
+  'family',
+  'fame',
+  'career',
+  'etc',
+] as const;
+
 const initialStep = Step.Start;
 
 const formSchema = z.object({
-  age: z.number().int().min(1).max(122),
-  gender: z.enum(['female', 'male', 'etc']),
-  mbti: z.string().length(4),
-  childhoodDream: z.string(),
-  mostImportantValue: z.enum(['money', 'family', 'fame', 'career', 'etc']),
-  lifeSatisfaction: z.number().int().min(1).max(10),
+  age: z.coerce.number().int().gte(1).lte(122),
+  gender: z.enum(gender),
+  mbti: z.enum(mbti),
+  childhoodDream: z.string().min(1),
+  mostImportantValue: z.enum(mostImportantValue),
+  lifeSatisfaction: z.coerce.number().int().gte(1).lte(10),
   email: z.string().email(),
 });
 
@@ -52,13 +81,6 @@ const RootPage = () => {
   const methods = useForm<InferredFormSchema>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      age: 0,
-      gender: 'female',
-      mbti: '',
-      childhoodDream: '',
-      mostImportantValue: 'money',
-      lifeSatisfaction: 0,
-      email: '',
       /* i want not to use default values */
     },
   });
