@@ -22,6 +22,7 @@ export function NextButton({ isLoading, step }: NextButtonProps) {
 
   return (
     <Button
+      type="submit"
       primary
       text="다음"
       isLoading={isLoading}

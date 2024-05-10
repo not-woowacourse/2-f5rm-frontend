@@ -15,8 +15,8 @@ const RootLayout = ({ children }: PropsWithChildren) => {
   return (
     <html lang="ko-KR">
       <QueryProvider>
-        <body className="flex justify-center bg-body dark:bg-body-dark">
-          {children}
+        <body className="bg-body dark:bg-body-dark">
+          <main className="flex w-full justify-center">{children}</main>
         </body>
       </QueryProvider>
     </html>
