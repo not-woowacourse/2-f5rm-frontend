@@ -1,3 +1,5 @@
+import { useFormContext } from 'react-hook-form';
+
 import { ChevronRight } from 'lucide-react';
 
 import {
@@ -6,11 +8,19 @@ import {
   AppBarTitle,
 } from '@/components/additional-ui/app-bar';
 import { Button } from '@/components/ui/button';
+import {
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+} from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import { FORM_ID, FORM_NAME } from '@/constants/form';
 import { type PropsWithOnNext } from '@/types/props';
 
 const EnterChildhoodDreamStep = ({ onNext }: PropsWithOnNext) => {
+  const { control } = useFormContext();
+
   return (
     <div className="flex flex-col items-center gap-4">
       <AppBar>
@@ -24,18 +34,31 @@ const EnterChildhoodDreamStep = ({ onNext }: PropsWithOnNext) => {
             당신의 어릴적 꿈은 무엇인가요?
           </h1>
         </div>
-        <div className="flex w-full flex-col gap-1.5">
-          <Label htmlFor="childhood-dream" className="text-xs">
-            어릴적 꿈
-          </Label>
-          <Input
-            id="childhood-dream"
-            placeholder="예) 유튜버"
-            className="text-black"
-          />
-        </div>
+        <FormField
+          control={control}
+          name={FORM_NAME.CHILDHOOD_DREAM}
+          render={({ field }) => (
+            <FormItem className="flex w-full flex-col gap-1.5">
+              <FormLabel
+                htmlFor={FORM_ID.CHILDHOOD_DREAM}
+                className="text-xs text-white"
+              >
+                어릴적 꿈
+              </FormLabel>
+              <FormControl>
+                <Input
+                  id={FORM_ID.CHILDHOOD_DREAM}
+                  placeholder="예) 유튜버"
+                  className="text-black"
+                  {...field}
+                />
+              </FormControl>
+            </FormItem>
+          )}
+        />
       </div>
       <Button
+        type="button"
         variant="secondary"
         onClick={onNext}
         className="fixed inset-x-0 bottom-4 mx-auto w-full max-w-[calc(100vw-2rem)] sm:max-w-[calc(512px-2rem)]"

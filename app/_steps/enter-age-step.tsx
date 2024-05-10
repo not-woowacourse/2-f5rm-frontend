@@ -1,3 +1,5 @@
+import { useFormContext } from 'react-hook-form';
+
 import { ChevronRight } from 'lucide-react';
 
 import {
@@ -6,11 +8,19 @@ import {
   AppBarTitle,
 } from '@/components/additional-ui/app-bar';
 import { Button } from '@/components/ui/button';
+import {
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+} from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import { FORM_ID, FORM_NAME } from '@/constants/form';
 import { type PropsWithOnNext } from '@/types/props';
 
 const EnterAgeStep = ({ onNext }: PropsWithOnNext) => {
+  const { control } = useFormContext();
+
   return (
     <div className="flex flex-col items-center gap-4">
       <AppBar>
@@ -22,21 +32,31 @@ const EnterAgeStep = ({ onNext }: PropsWithOnNext) => {
           <p className="text-6xl font-extrabold">Q1</p>
           <h1 className="text-2xl font-semibold">당신의 나이를 입력해주세요</h1>
         </div>
-        <div className="flex w-full flex-col gap-1.5">
-          <Label htmlFor="age" className="text-xs">
-            만 나이
-          </Label>
-          <Input
-            type="number"
-            id="age"
-            min="1"
-            max="150"
-            placeholder="예) 23"
-            className="text-black"
-          />
-        </div>
+        <FormField
+          control={control}
+          name={FORM_NAME.AGE}
+          render={({ field }) => (
+            <FormItem className="flex w-full flex-col gap-1.5">
+              <FormLabel htmlFor={FORM_ID.AGE} className="text-xs text-white">
+                만 나이
+              </FormLabel>
+              <FormControl>
+                <Input
+                  type="number"
+                  id={FORM_ID.AGE}
+                  min="1"
+                  max="122"
+                  placeholder="예) 23"
+                  className="text-black"
+                  {...field}
+                />
+              </FormControl>
+            </FormItem>
+          )}
+        />
       </div>
       <Button
+        type="button"
         variant="secondary"
         onClick={onNext}
         className="fixed inset-x-0 bottom-4 mx-auto w-full max-w-[calc(100vw-2rem)] sm:max-w-[calc(512px-2rem)]"

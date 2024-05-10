@@ -25,6 +25,7 @@ const SubmitStep = ({ onNext }: PropsWithOnNext) => {
         </p>
       </div>
       <Button
+        type="submit"
         variant="secondary"
         onClick={onNext}
         className="fixed inset-x-0 bottom-4 mx-auto w-full max-w-[calc(100vw-2rem)] sm:max-w-[calc(512px-2rem)]"

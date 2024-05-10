@@ -1,3 +1,5 @@
+import { useFormContext } from 'react-hook-form';
+
 import { ChevronRight } from 'lucide-react';
 
 import {
@@ -10,9 +12,13 @@ import {
   ButtonRadioGroupItem,
 } from '@/components/additional-ui/button-radio-group';
 import { Button } from '@/components/ui/button';
+import { FormControl, FormField } from '@/components/ui/form';
+import { FORM_NAME } from '@/constants/form';
 import { type PropsWithOnNext } from '@/types/props';
 
 const EnterGenderStep = ({ onNext }: PropsWithOnNext) => {
+  const { control } = useFormContext();
+
   return (
     <div className="flex flex-col items-center gap-4">
       <AppBar>
@@ -24,16 +30,34 @@ const EnterGenderStep = ({ onNext }: PropsWithOnNext) => {
           <p className="text-6xl font-extrabold">Q2</p>
           <h1 className="text-2xl font-semibold">당신의 성별을 입력해주세요</h1>
         </div>
-        <ButtonRadioGroup
-          defaultValue="female"
-          className="flex w-full flex-col gap-2"
-        >
-          <ButtonRadioGroupItem value="female">여성</ButtonRadioGroupItem>
-          <ButtonRadioGroupItem value="male">남성</ButtonRadioGroupItem>
-          <ButtonRadioGroupItem value="etc">기타</ButtonRadioGroupItem>
-        </ButtonRadioGroup>
+        <FormField
+          control={control}
+          name={FORM_NAME.GENDER}
+          render={({ field }) => (
+            <FormControl>
+              <ButtonRadioGroup
+                onValueChange={field.onChange}
+                defaultValue={field.value}
+                className="flex w-full flex-col gap-2"
+              >
+                <FormControl>
+                  <ButtonRadioGroupItem value="female">
+                    여성
+                  </ButtonRadioGroupItem>
+                </FormControl>
+                <FormControl>
+                  <ButtonRadioGroupItem value="male">남성</ButtonRadioGroupItem>
+                </FormControl>
+                <FormControl>
+                  <ButtonRadioGroupItem value="etc">기타</ButtonRadioGroupItem>
+                </FormControl>
+              </ButtonRadioGroup>
+            </FormControl>
+          )}
+        />
       </div>
       <Button
+        type="button"
         variant="secondary"
         onClick={onNext}
         className="fixed inset-x-0 bottom-4 mx-auto w-full max-w-[calc(100vw-2rem)] sm:max-w-[calc(512px-2rem)]"

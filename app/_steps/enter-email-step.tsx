@@ -1,3 +1,5 @@
+import { useFormContext } from 'react-hook-form';
+
 import { ChevronRight } from 'lucide-react';
 
 import {
@@ -6,11 +8,19 @@ import {
   AppBarTitle,
 } from '@/components/additional-ui/app-bar';
 import { Button } from '@/components/ui/button';
+import {
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+} from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import { FORM_ID, FORM_NAME } from '@/constants/form';
 import { type PropsWithOnNext } from '@/types/props';
 
 const EnterEmailStep = ({ onNext }: PropsWithOnNext) => {
+  const { control } = useFormContext();
+
   return (
     <div className="flex flex-col items-center gap-4">
       <AppBar>
@@ -24,19 +34,29 @@ const EnterEmailStep = ({ onNext }: PropsWithOnNext) => {
             당신의 이메일을 입력해주세요
           </h1>
         </div>
-        <div className="flex w-full flex-col gap-1.5">
-          <Label htmlFor="email" className="text-xs">
-            이메일
-          </Label>
-          <Input
-            type="email"
-            id="email"
-            placeholder="예) someone@umore.com"
-            className="text-black"
-          />
-        </div>
+        <FormField
+          control={control}
+          name={FORM_NAME.EMAIL}
+          render={({ field }) => (
+            <FormItem className="flex w-full flex-col gap-1.5">
+              <FormLabel htmlFor={FORM_ID.EMAIL} className="text-xs text-white">
+                이메일
+              </FormLabel>
+              <FormControl>
+                <Input
+                  type="email"
+                  id={FORM_ID.EMAIL}
+                  placeholder="예) someone@umore.com"
+                  className="text-black"
+                  {...field}
+                />
+              </FormControl>
+            </FormItem>
+          )}
+        />
       </div>
       <Button
+        type="button"
         variant="secondary"
         onClick={onNext}
         className="fixed inset-x-0 bottom-4 mx-auto w-full max-w-[calc(100vw-2rem)] sm:max-w-[calc(512px-2rem)]"

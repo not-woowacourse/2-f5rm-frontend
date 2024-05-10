@@ -20,8 +20,8 @@ const StartStep = ({ onNext }: PropsWithOnNext) => {
       </div>
       <Image
         src={happy_family}
+        priority
         width={280}
-        height={280}
         alt="행복한 가족 사진"
         className="my-10"
       />

@@ -1,3 +1,5 @@
+import { useFormContext } from 'react-hook-form';
+
 import { ChevronRight } from 'lucide-react';
 
 import {
@@ -10,9 +12,13 @@ import {
   ButtonRadioGroupItem,
 } from '@/components/additional-ui/button-radio-group';
 import { Button } from '@/components/ui/button';
+import { FormControl, FormField } from '@/components/ui/form';
+import { FORM_NAME } from '@/constants/form';
 import { type PropsWithOnNext } from '@/types/props';
 
 const EnterMostImportantValueStep = ({ onNext }: PropsWithOnNext) => {
+  const { control } = useFormContext();
+
   return (
     <div className="flex flex-col items-center gap-4">
       <AppBar>
@@ -26,24 +32,46 @@ const EnterMostImportantValueStep = ({ onNext }: PropsWithOnNext) => {
             지금 당신의 삶에서 <br /> 가장 중요한 가치를 말해주세요
           </h1>
         </div>
-        <ButtonRadioGroup
-          defaultValue="money"
-          className="flex w-full flex-col gap-2"
-        >
-          <ButtonRadioGroupItem value="money">
-            돈, 물질적인 풍요
-          </ButtonRadioGroupItem>
-          <ButtonRadioGroupItem value="family">가족</ButtonRadioGroupItem>
-          <ButtonRadioGroupItem value="fame">
-            명예, 인정받는 삶
-          </ButtonRadioGroupItem>
-          <ButtonRadioGroupItem value="success">
-            커리어, 취업
-          </ButtonRadioGroupItem>
-          <ButtonRadioGroupItem value="etc">기타</ButtonRadioGroupItem>
-        </ButtonRadioGroup>
+        <FormField
+          control={control}
+          name={FORM_NAME.MOST_IMPORTANT_VALUE}
+          render={({ field }) => (
+            <FormControl>
+              <ButtonRadioGroup
+                onValueChange={field.onChange}
+                defaultValue={field.value}
+                className="flex w-full flex-col gap-2"
+              >
+                <FormControl>
+                  <ButtonRadioGroupItem value="money">
+                    돈, 물질적 풍요
+                  </ButtonRadioGroupItem>
+                </FormControl>
+                <FormControl>
+                  <ButtonRadioGroupItem value="family">
+                    가족
+                  </ButtonRadioGroupItem>
+                </FormControl>
+                <FormControl>
+                  <ButtonRadioGroupItem value="fame">
+                    명예, 인정받는 삶
+                  </ButtonRadioGroupItem>
+                </FormControl>
+                <FormControl>
+                  <ButtonRadioGroupItem value="career">
+                    커리어, 취업
+                  </ButtonRadioGroupItem>
+                </FormControl>
+                <FormControl>
+                  <ButtonRadioGroupItem value="etc">기타</ButtonRadioGroupItem>
+                </FormControl>
+              </ButtonRadioGroup>
+            </FormControl>
+          )}
+        />
       </div>
       <Button
+        type="button"
         variant="secondary"
         onClick={onNext}
         className="fixed inset-x-0 bottom-4 mx-auto w-full max-w-[calc(100vw-2rem)] sm:max-w-[calc(512px-2rem)]"
