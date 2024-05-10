@@ -30,5 +30,6 @@ export default function HomePage({ searchParams: { step } }: HomePageProps) {
   if (stepNumber === items.length) return <div>End</div>;
 
   // "/?step=5" (step: 0~9)
-  return <FormLayout step={stepNumber} item={items[stepNumber]} />;
+
+  return <FormLayout step={stepNumber} />;
 }
