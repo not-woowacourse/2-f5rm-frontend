@@ -1,7 +1,7 @@
 import { type Metadata } from 'next';
 import localFont from 'next/font/local';
 
-import { type PropsWithChildren } from 'react';
+import { type PropsWithChildren, Suspense } from 'react';
 
 import { cn } from '@/lib/utils';
 import QueryProvider from '@/providers/query-provider';
@@ -28,7 +28,8 @@ const RootLayout = ({ children }: PropsWithChildren) => {
             'bg-gradient-to-r from-orange-500 to-red-500 text-white',
           )}
         >
-          {children}
+          {/* FIXME: need to remove Suspense */}
+          <Suspense>{children}</Suspense>
         </body>
       </QueryProvider>
     </html>
