@@ -12,6 +12,7 @@ import { AnswerInput } from '@/components/AnswerInput';
 import { Header } from '@/components/Header';
 import { NextButton } from '@/components/NextButton';
 import { Paragraphs } from '@/components/Paragraphs';
+import { SkipButton } from '@/components/SkipButton';
 import { metadata } from '@/constants/metadata';
 
 interface FormLayoutProps {
@@ -51,6 +52,8 @@ export function FormLayout({ step }: FormLayoutProps) {
     router.push(withQuery(pathname, { step: step + 1 }));
   };
 
+  const isOptional = item.answer.restrictions.isOptional();
+
   return (
     <form
       className="flex h-screen max-w-lg flex-grow flex-col"
@@ -68,9 +71,13 @@ export function FormLayout({ step }: FormLayoutProps) {
           name={item.id}
           answer={item.answer}
           register={register}
+          required={!isOptional}
           error={errors[item.id] as FieldError}
         />
-        <NextButton disabled={!watch(item.id)} />
+        <div className="flex gap-2.5">
+          {isOptional && <SkipButton step={step} />}
+          <NextButton disabled={!watch(item.id)} />
+        </div>
       </section>
     </form>
   );

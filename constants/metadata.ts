@@ -43,7 +43,10 @@ export const metadata: Metadata = {
         label: '블로그 주소',
         placeholder: 'blog.te6.in',
         prefix: 'https://',
-        restrictions: z.string().url('URL 형태가 맞는지 확인해주세요.'),
+        restrictions: z
+          .string()
+          .url('URL 형태가 맞는지 확인해주세요.')
+          .optional(),
       },
     },
     {

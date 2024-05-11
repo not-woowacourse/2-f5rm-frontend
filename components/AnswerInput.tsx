@@ -11,17 +11,19 @@ import { TextInput } from '@/components/ui';
 import type { metadata } from '@/constants/metadata';
 
 interface AnswerInputProps<T extends FieldValues> {
-  register: UseFormRegister<T>;
   name: Path<T>;
-  error: FieldError | undefined;
   answer: (typeof metadata)['items'][number]['answer'];
+  register: UseFormRegister<T>;
+  required: boolean;
+  error: FieldError | undefined;
 }
 
 export function AnswerInput<T extends FieldValues>({
-  register,
   name,
-  error,
   answer,
+  register,
+  required,
+  error,
 }: AnswerInputProps<T>) {
   return (
     <div>
@@ -32,7 +34,11 @@ export function AnswerInput<T extends FieldValues>({
         <TextInput
           name={name}
           register={register}
-          options={{ valueAsNumber: answer.type === 'number' }}
+          options={{
+            valueAsNumber: answer.type === 'number',
+            // this is only to show the red asterisk
+            required,
+          }}
           type={answer.type}
           title={answer.label}
           placeholder={answer.placeholder}
