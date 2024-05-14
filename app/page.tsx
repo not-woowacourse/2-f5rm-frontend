@@ -6,6 +6,8 @@ import { useCallback } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation } from '@tanstack/react-query';
+import { toast } from 'sonner';
 import z from 'zod';
 
 import EnterAgeStep from '@/app/_steps/enter-age-step';
@@ -20,6 +22,7 @@ import SubmitStep from '@/app/_steps/submit-step';
 import { HookFormDevTool__Csr } from '@/components/etc/HookFormDevTool__Csr';
 import { ROUTES } from '@/constants/routes';
 import { SEARCH_PARAMS } from '@/constants/search-params';
+import { axiosPostForm } from '@/lib/apis';
 import { cn, noop } from '@/lib/utils';
 
 enum Step {
@@ -72,7 +75,7 @@ const formSchema = z.object({
   childhoodDream: z.string().min(1),
   mostImportantValue: z.enum(mostImportantValue),
   lifeSatisfaction: z.coerce.number().int().gte(1).lte(10),
-  email: z.string().email(),
+  email: z.string().email().optional(),
 });
 
 type InferredFormSchema = z.infer<typeof formSchema>;
@@ -84,14 +87,23 @@ const RootPage = () => {
     resolver: zodResolver(formSchema),
   });
 
+  const { mutate } = useMutation({
+    mutationFn: axiosPostForm,
+    onSuccess: () => {
+      methods.reset();
+
+      toast.success('설문이 제출되었습니다. 감사합니다!');
+
+      /* TODO: make a result page */
+      router.push(ROUTES.ROOT);
+    },
+    onError: () => {
+      toast.error('설문 제출에 실패했습니다. 나중에 다시 시도해주세요.');
+    },
+  });
+
   const onSubmit = (values: InferredFormSchema) => {
-    /* TODO: send data to server */
-    alert(JSON.stringify(values));
-
-    methods.reset();
-
-    /* TODO: make a result page */
-    router.push(ROUTES.ROOT);
+    mutate({ data: values });
   };
 
   const step = searchParams.get(SEARCH_PARAMS.FUNNEL_STEP) ?? initialStep;

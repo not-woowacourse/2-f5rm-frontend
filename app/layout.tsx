@@ -3,6 +3,7 @@ import localFont from 'next/font/local';
 
 import { type PropsWithChildren, Suspense } from 'react';
 
+import { Toaster } from '@/components/ui/sonner';
 import { cn } from '@/lib/utils';
 import QueryProvider from '@/providers/query-provider';
 
@@ -26,6 +27,7 @@ const RootLayout = ({ children }: PropsWithChildren) => {
           {/* FIXME: need to remove Suspense */}
           <Suspense>{children}</Suspense>
         </body>
+        <Toaster richColors position="bottom-center" />
       </QueryProvider>
     </html>
   );

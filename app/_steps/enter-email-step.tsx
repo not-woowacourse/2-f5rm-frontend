@@ -42,7 +42,7 @@ const EnterEmailStep = ({ onNext }: PropsWithOnNext) => {
           render={({ field }) => (
             <FormItem className="flex w-full flex-col">
               <FormLabel htmlFor={FORM_ID.EMAIL} className="text-sm text-white">
-                이메일
+                이메일 (선택)
               </FormLabel>
               <FormControl>
                 <Input

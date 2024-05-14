@@ -1,3 +1,5 @@
+import { useFormContext } from 'react-hook-form';
+
 import { CheckCircle, ChevronRight } from 'lucide-react';
 
 import {
@@ -9,6 +11,10 @@ import { Button } from '@/components/ui/button';
 import { type PropsWithOnNext } from '@/types/props';
 
 const SubmitStep = ({ onNext }: PropsWithOnNext) => {
+  const {
+    formState: { isSubmitting },
+  } = useFormContext();
+
   return (
     <div className="flex flex-col items-center gap-4">
       <AppBar>
@@ -28,6 +34,7 @@ const SubmitStep = ({ onNext }: PropsWithOnNext) => {
         type="submit"
         variant="secondary"
         onClick={onNext}
+        disabled={isSubmitting}
         className="fixed inset-x-0 bottom-4 mx-auto w-full max-w-[calc(100vw-2rem)] sm:max-w-[calc(512px-2rem)]"
       >
         <ChevronRight className="mr-2 h-5 w-5" />
