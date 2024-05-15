@@ -10,6 +10,7 @@ import { useMutation } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import z from 'zod';
 
+import { type CreateFormDto } from '@/__generated__/data-contracts';
 import EnterAgeStep from '@/app/_steps/enter-age-step';
 import EnterChildhoodDreamStep from '@/app/_steps/enter-childhood-dream-step';
 import EnterEmailStep from '@/app/_steps/enter-email-step';
@@ -22,7 +23,7 @@ import SubmitStep from '@/app/_steps/submit-step';
 import { HookFormDevTool__Csr } from '@/components/etc/HookFormDevTool__Csr';
 import { ROUTES } from '@/constants/routes';
 import { SEARCH_PARAMS } from '@/constants/search-params';
-import { axiosPostForm } from '@/lib/apis';
+import { formsApiInstance } from '@/lib/api-instance';
 import { cn, noop } from '@/lib/utils';
 
 enum Step {
@@ -80,6 +81,13 @@ const formSchema = z.object({
 
 type InferredFormSchema = z.infer<typeof formSchema>;
 
+const postForm = async (createFormDto: CreateFormDto) => {
+  await formsApiInstance.formsControllerCreate(
+    process.env.NEXT_PUBLIC_SCHEMA_SLUG!,
+    createFormDto,
+  );
+};
+
 const RootPage = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -88,7 +96,7 @@ const RootPage = () => {
   });
 
   const { mutate } = useMutation({
-    mutationFn: axiosPostForm,
+    mutationFn: postForm,
     onSuccess: () => {
       methods.reset();
 
