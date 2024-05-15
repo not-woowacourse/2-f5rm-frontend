@@ -10,7 +10,7 @@
     "lint:fix": "next lint --fix",
     "format": "prettier --write .",
     "prepare": "husky install",
-    "sta": "sta -p https://not-woowacourse-api.yopark.dev/api-docs-json -o types -n __generated__.d.ts --no-client"
+    "sta": "sta -p https://not-woowacourse-api.yopark.dev/api-docs-json -o __generated__ --modular --axios --extract-request-params --extract-request-body --extract-response-body --extract-response-error"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.4",
