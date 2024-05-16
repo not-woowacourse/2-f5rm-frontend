@@ -7,7 +7,7 @@ import type {
   UseFormRegister,
 } from 'react-hook-form';
 
-import { TextInput } from '@/components/ui';
+import { Selector, TextInput } from '@/components/ui';
 import type { metadata } from '@/constants/metadata';
 
 interface AnswerInputProps<T extends FieldValues> {
@@ -45,6 +45,17 @@ export function AnswerInput<T extends FieldValues>({
           prefix={answer.prefix}
           suffix={answer.suffix}
           error={error?.message}
+        />
+      )}
+      {answer.type === 'select' && (
+        <Selector
+          name={name}
+          register={register}
+          options={{ required }}
+          title={answer.label}
+          items={answer.options}
+          error={error?.message}
+          gridCols="grid-cols-3"
         />
       )}
     </div>
