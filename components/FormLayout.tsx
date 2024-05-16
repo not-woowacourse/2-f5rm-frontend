@@ -2,7 +2,7 @@
 
 import { usePathname, useRouter } from 'next/navigation';
 
-import { type FieldError, useForm } from 'react-hook-form';
+import { type FieldError, type Path, useForm } from 'react-hook-form';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { withQuery } from 'ufo';
@@ -19,8 +19,8 @@ interface FormLayoutProps {
   step: number;
 }
 
-interface FormLayoutValues {
-  [key: string]: string;
+interface FormValues {
+  [key: number]: string;
 }
 
 export function FormLayout({ step }: FormLayoutProps) {
@@ -31,13 +31,11 @@ export function FormLayout({ step }: FormLayoutProps) {
     watch,
     handleSubmit,
     formState: { errors },
-  } = useForm<{
-    [key in (typeof metadata)['items'][number]['id']]: string;
-  }>({
+  } = useForm<FormValues>({
     ...(item.answer.restrictions && {
       resolver: zodResolver(
         z.object({
-          [item.id]: item.answer.restrictions,
+          [step]: item.answer.restrictions,
         }),
       ),
     }),
@@ -46,7 +44,7 @@ export function FormLayout({ step }: FormLayoutProps) {
   const router = useRouter();
   const pathname = usePathname();
 
-  const onValid = (data: FormLayoutValues) => {
+  const onValid = (data: FormValues) => {
     console.log(data);
 
     router.push(withQuery(pathname, { step: step + 1 }));
@@ -67,16 +65,16 @@ export function FormLayout({ step }: FormLayoutProps) {
         <Paragraphs text={item.description} />
       </section>
       <section className="flex flex-col gap-3 p-3.5">
-        <AnswerInput
-          name={item.id}
+        <AnswerInput<FormValues>
+          name={step.toString() as Path<FormValues>}
           answer={item.answer}
           register={register}
           required={!isOptional}
-          error={errors[item.id] as FieldError}
+          error={errors[step] as FieldError}
         />
         <div className="flex gap-2.5">
           {isOptional && <SkipButton step={step} />}
-          <NextButton disabled={!watch(item.id)} />
+          <NextButton disabled={!watch()[step]} />
         </div>
       </section>
     </form>

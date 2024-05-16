@@ -18,7 +18,6 @@ type Answer = {
 );
 
 interface Item {
-  id: string;
   question: string;
   description: string;
   answer: Answer;
@@ -35,7 +34,6 @@ export const metadata: Metadata = {
   description: '테스트 설문입니다.',
   items: [
     {
-      id: 'a',
       question: '첫 번째 질문',
       description: '안녕하세요, 첫 번째 질문입니다.',
       answer: {
@@ -50,7 +48,6 @@ export const metadata: Metadata = {
       },
     },
     {
-      id: 'b',
       question: '두 번째 질문',
       description: '안녕하세요, 두 번째 질문입니다.',
       answer: {
