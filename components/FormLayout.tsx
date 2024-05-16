@@ -65,7 +65,7 @@ export function FormLayout({ step }: FormLayoutProps) {
         <Paragraphs text={item.description} />
       </section>
       <section className="flex flex-col gap-3 p-3.5">
-        <AnswerInput<FormValues>
+        <AnswerInput
           name={step.toString() as Path<FormValues>}
           answer={item.answer}
           register={register}
