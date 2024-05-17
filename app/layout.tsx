@@ -1,7 +1,7 @@
 import { type Metadata } from 'next';
 import localFont from 'next/font/local';
 
-import { type PropsWithChildren, Suspense } from 'react';
+import { type PropsWithChildren } from 'react';
 
 import { Toaster } from '@/components/ui/sonner';
 import { cn } from '@/lib/utils';
@@ -26,8 +26,7 @@ const RootLayout = ({ children }: PropsWithChildren) => {
       <body className={cn(wantedSansVariable.className, 'bg-neutral-100')}>
         <RecoilRootProvider>
           <QueryProvider>
-            {/* FIXME: need to remove Suspense */}
-            <Suspense>{children}</Suspense>
+            {children}
             <Toaster richColors position="bottom-center" />
           </QueryProvider>
         </RecoilRootProvider>
