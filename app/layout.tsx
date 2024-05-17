@@ -6,6 +6,7 @@ import { type PropsWithChildren, Suspense } from 'react';
 import { Toaster } from '@/components/ui/sonner';
 import { cn } from '@/lib/utils';
 import QueryProvider from '@/providers/query-provider';
+import RecoilRootProvider from '@/providers/recoil-root-provider';
 
 import './globals.css';
 
@@ -22,13 +23,15 @@ const metadata: Metadata = {
 const RootLayout = ({ children }: PropsWithChildren) => {
   return (
     <html lang="ko-KR">
-      <QueryProvider>
-        <body className={cn(wantedSansVariable.className, 'bg-neutral-100')}>
-          {/* FIXME: need to remove Suspense */}
-          <Suspense>{children}</Suspense>
-        </body>
-        <Toaster richColors position="bottom-center" />
-      </QueryProvider>
+      <body className={cn(wantedSansVariable.className, 'bg-neutral-100')}>
+        <RecoilRootProvider>
+          <QueryProvider>
+            {/* FIXME: need to remove Suspense */}
+            <Suspense>{children}</Suspense>
+            <Toaster richColors position="bottom-center" />
+          </QueryProvider>
+        </RecoilRootProvider>
+      </body>
     </html>
   );
 };
