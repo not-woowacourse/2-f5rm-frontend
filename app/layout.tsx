@@ -2,6 +2,7 @@ import { type Metadata } from 'next';
 
 import { type PropsWithChildren } from 'react';
 
+import { FormProvider } from '@/providers/form-provider';
 import QueryProvider from '@/providers/query-provider';
 
 import './globals.css';
@@ -16,7 +17,9 @@ const RootLayout = ({ children }: PropsWithChildren) => {
     <html lang="ko-KR">
       <QueryProvider>
         <body className="break-keep bg-body dark:bg-body-dark">
-          <main className="flex w-full justify-center">{children}</main>
+          <main className="flex w-full justify-center">
+            <FormProvider>{children}</FormProvider>
+          </main>
         </body>
       </QueryProvider>
     </html>

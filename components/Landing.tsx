@@ -7,7 +7,7 @@ export function Landing() {
     <div className="flex h-screen max-w-lg flex-grow flex-col">
       <section className="flex flex-grow flex-col gap-3.5 overflow-auto p-4 text-base-600 dark:text-base-dark-400">
         <h1 className="text-balance text-3xl font-bold text-base-700 dark:text-base-dark-300">
-          안녕하세요!
+          {metadata.title}
         </h1>
         <Paragraphs text={metadata.description} />
       </section>

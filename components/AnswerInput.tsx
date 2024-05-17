@@ -1,31 +1,27 @@
 'use client';
 
-import type {
-  FieldError,
-  FieldValues,
-  Path,
-  UseFormRegister,
-} from 'react-hook-form';
+import { type FieldError, type Path, useFormContext } from 'react-hook-form';
 
 import { Checkbox, Selector, TextInput } from '@/components/ui';
 import type { metadata } from '@/constants/metadata';
 import { getOptionId } from '@/lib/utils';
+import { type FormValues } from '@/providers/form-provider';
 
-interface AnswerInputProps<T extends FieldValues> {
+interface AnswerInputProps<T extends FormValues> {
   name: Path<T>;
   answer: (typeof metadata)['items'][number]['answer'];
-  register: UseFormRegister<T>;
   required: boolean;
   error: FieldError | undefined;
 }
 
-export function AnswerInput<T extends FieldValues>({
+export function AnswerInput<T extends FormValues>({
   name,
   answer,
-  register,
   required,
   error,
 }: AnswerInputProps<T>) {
+  const { register } = useFormContext<FormValues>();
+
   return (
     <div>
       {(answer.type === 'text' ||

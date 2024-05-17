@@ -22,6 +22,7 @@ type DefaultAnswer = {
 
 type TextInputAnswer = DefaultAnswer & {
   type: 'text' | 'url' | 'email' | 'number' | 'datetime';
+  isArray?: boolean;
 } & Pick<
     ComponentPropsWithoutRef<typeof TextInput>,
     'title' | 'placeholder' | 'prefix' | 'suffix'
@@ -54,9 +55,14 @@ interface Metadata {
 }
 
 export const metadata: Metadata = {
-  title: '설문',
-  description: '테스트 설문입니다.',
+  title: '라이프스타일 및 취향 설문조사',
+  description: `이 설문조사는 귀하의 일상생활 패턴, 개인적인 취향 및 선호도를 알아보기 위한 것입니다.
+     설문 결과는 향후 제품 및 서비스 개발에 활용될 예정이므로, 가능한 한 솔직하고 상세한 답변을 부탁드립니다.
+     본 설문은 전체 4개 문항으로 구성되어 있으며, 작성에 소요되는 시간은 약 5분 내외입니다.
+     귀하의 소중한 의견이 반영될 수 있도록 성실한 답변 해주시기 바랍니다.
+     응답해 주셔서 대단히 감사합니다.`,
   items: [
+    // 0
     {
       question: '나이',
       description: '안녕하세요, 나이가 어떻게 되시나요?',
@@ -79,6 +85,7 @@ export const metadata: Metadata = {
           .max(200, '너무 많습니다.'),
       },
     },
+    // 1
     {
       question: '날씨',
       description: '가장 선호하는 날씨를 선택해주세요.',
@@ -95,6 +102,7 @@ export const metadata: Metadata = {
           .optional(),
       },
     },
+    // 2
     {
       question: '약관 동의',
       description: '약관에 동의해보세요.',
@@ -109,6 +117,7 @@ export const metadata: Metadata = {
         ],
       },
     },
+    // 3
     {
       question: '음식',
       description: `가장 좋아하는 음식을 선택해주세요.

@@ -32,8 +32,8 @@ const config = {
       },
       colors: {
         body: {
-          DEFAULT: '#f7f7f7',
-          dark: '#1f1f1f',
+          DEFAULT: neutral[50],
+          dark: neutral[950],
         },
         base: neutral,
         'base-dark': neutral,
