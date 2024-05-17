@@ -9,23 +9,24 @@ import { ArrowRight } from 'lucide-react';
 import { withQuery } from 'ufo';
 
 import { Button } from '@/components/ui';
-import { getQuestionId } from '@/lib/utils';
+import type { Metadata } from '@/constants/types';
 import type { FormValues } from '@/providers/form-provider';
 
 type NextButtonProps = Required<
   Pick<ComponentPropsWithoutRef<typeof Button>, 'disabled'>
 > & {
   step: number;
+  itemId: Metadata['items'][number]['id'];
 };
 
-export function NextButton({ disabled, step }: NextButtonProps) {
+export function NextButton({ disabled, step, itemId }: NextButtonProps) {
   const router = useRouter();
   const pathname = usePathname();
 
   const { getFieldState } = useFormContext<FormValues>();
 
   const onClick = () => {
-    const { invalid } = getFieldState(getQuestionId(step));
+    const { invalid } = getFieldState(itemId);
 
     if (invalid) return;
 

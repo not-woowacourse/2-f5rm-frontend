@@ -4,7 +4,6 @@ import { type FieldError, type Path, useFormContext } from 'react-hook-form';
 
 import { Checkbox, Selector, TextInput } from '@/components/ui';
 import type { metadata } from '@/constants/metadata';
-import { getOptionId } from '@/lib/utils';
 import { type FormValues } from '@/providers/form-provider';
 
 interface AnswerInputProps<T extends FormValues> {
@@ -58,14 +57,14 @@ export function AnswerInput<T extends FormValues>({
       )}
       {answer.type === 'multiselect' && (
         <fieldset className="flex flex-col gap-2.5">
-          {answer.options.map((item, index) => (
+          {answer.options.map((option, index) => (
             <Checkbox
               key={index}
-              name={`${name}.${getOptionId(index)}` as Path<T>}
+              name={`${name}.${option.id}`}
               register={register}
-              title={item.title}
-              description={item.description}
-              options={{ required: item.required }}
+              title={option.title}
+              description={option.description}
+              options={{ required: option.required }}
             />
           ))}
         </fieldset>

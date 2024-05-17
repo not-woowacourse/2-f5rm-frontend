@@ -4,11 +4,11 @@ import type { Schema } from 'zod';
 
 import type { Checkbox, Selector, TextInput } from '@/components/ui';
 
-type DefaultAnswer = {
+type DefaultRestriction = {
   restrictions: Schema;
 };
 
-type TextInputAnswer = DefaultAnswer & {
+type TextInputAnswer = DefaultRestriction & {
   type: 'text' | 'url' | 'email' | 'number' | 'datetime';
   isArray?: boolean;
 } & Pick<
@@ -16,21 +16,27 @@ type TextInputAnswer = DefaultAnswer & {
     'title' | 'placeholder' | 'prefix' | 'suffix'
   >;
 
-type SelectAnswer = DefaultAnswer & {
+type SelectAnswer = DefaultRestriction & {
   type: 'select';
 } & Pick<ComponentPropsWithoutRef<typeof Selector>, 'items' | 'title'>;
 
+export type MultiSelectOption = Pick<
+  ComponentPropsWithoutRef<typeof Checkbox>,
+  'title' | 'description'
+> & {
+  id: string; // should be unique
+  required?: boolean;
+};
+
 type MultiSelectAnswer = {
   type: 'multiselect';
-  options: (Pick<
-    ComponentPropsWithoutRef<typeof Checkbox>,
-    'title' | 'description'
-  > & { required?: boolean })[];
+  options: MultiSelectOption[];
 };
 
 type Answer = TextInputAnswer | SelectAnswer | MultiSelectAnswer;
 
 interface Item {
+  id: string; // should be unique
   question: string;
   description: string;
   answer: Answer;

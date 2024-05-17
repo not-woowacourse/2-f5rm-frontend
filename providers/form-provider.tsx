@@ -7,23 +7,29 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 
 import { metadata } from '@/constants/metadata';
-import { getQuestionId } from '@/lib/utils';
+import type { Metadata } from '@/constants/types';
 
-export type MultiSelectValues = Record<`option-${number}`, boolean>;
+export type MultiSelectValues = Metadata['items'][number]['answer']['type'];
 
 export type FormValues = Record<
-  `question-${number}`,
+  Metadata['items'][number]['id'],
   string | number | string[] | number[] | MultiSelectValues
 >;
 
 export function FormProvider({ children }: PropsWithChildren) {
   const restrictions = z.object(
     Object.fromEntries(
-      metadata.items.map((item, index) => [
-        getQuestionId(index),
+      metadata.items.map((item) => [
+        item.id,
         item.answer.type === 'multiselect'
-          ? // TODO: validate this better (maybe use getOptionId() and use required field)
-            z.record(z.string().startsWith('option-'), z.boolean())
+          ? z.object(
+              Object.fromEntries(
+                item.answer.options.map((option) => [
+                  option.id,
+                  option.required ? z.literal(true) : z.boolean(),
+                ]),
+              ),
+            )
           : item.answer.restrictions,
       ]),
     ),
@@ -31,7 +37,7 @@ export function FormProvider({ children }: PropsWithChildren) {
 
   const methods = useForm<FormValues>({
     resolver: zodResolver(restrictions),
-    mode: 'onBlur',
+    mode: 'onChange',
   });
 
   return <RHFProvider {...methods}>{children}</RHFProvider>;

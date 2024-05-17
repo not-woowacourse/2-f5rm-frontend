@@ -15,6 +15,7 @@ import type { Metadata } from '@/constants/types';
 
 const items: Metadata['items'] = [
   {
+    id: 'age',
     question: '나이',
     description: '안녕하세요, 나이가 어떻게 되시나요?',
     answer: {
@@ -38,6 +39,7 @@ const items: Metadata['items'] = [
   },
   // 1
   {
+    id: 'weather',
     question: '날씨',
     description: '가장 선호하는 날씨를 선택해주세요.',
     answer: {
@@ -53,13 +55,20 @@ const items: Metadata['items'] = [
   },
   // 2
   {
+    id: 'terms',
     question: '약관 동의',
     description: '약관에 동의해보세요.',
     answer: {
       type: 'multiselect',
       options: [
-        { title: '이용 약관 동의', required: true },
         {
+          id: 'terms',
+          title: '이용 약관 동의',
+          description: '약관에 동의합니다.',
+          required: true,
+        },
+        {
+          id: 'privacy',
           title: '개인 정보 처리 방침 동의',
           description: '당신의 개인정보를 판매합니다.',
         },
@@ -68,6 +77,7 @@ const items: Metadata['items'] = [
   },
   // 3
   {
+    id: 'food',
     question: '음식',
     description: `가장 좋아하는 음식을 선택해주세요.
                     피자: 밀가루 반죽 위에 토마토 소스, 치즈, 다양한 토핑이 얹혀 있는 이탈리아 요리입니다. 퍼지고 둥근 모양이 특징입니다.
