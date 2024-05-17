@@ -7,8 +7,9 @@ import type {
   UseFormRegister,
 } from 'react-hook-form';
 
-import { Selector, TextInput } from '@/components/ui';
+import { Checkbox, Selector, TextInput } from '@/components/ui';
 import type { metadata } from '@/constants/metadata';
+import { getOptionId } from '@/lib/utils';
 
 interface AnswerInputProps<T extends FieldValues> {
   name: Path<T>;
@@ -40,7 +41,7 @@ export function AnswerInput<T extends FieldValues>({
             required,
           }}
           type={answer.type}
-          title={answer.label}
+          title={answer.title}
           placeholder={answer.placeholder}
           prefix={answer.prefix}
           suffix={answer.suffix}
@@ -52,11 +53,26 @@ export function AnswerInput<T extends FieldValues>({
           name={name}
           register={register}
           options={{ required }}
-          title={answer.label}
-          items={answer.options}
+          title={answer.title}
+          items={answer.items}
           error={error?.message}
+          // TODO: handle this better
           gridCols="grid-cols-3"
         />
+      )}
+      {answer.type === 'multiselect' && (
+        <fieldset className="flex flex-col gap-2.5">
+          {answer.options.map((item, index) => (
+            <Checkbox
+              key={index}
+              name={`${name}.${getOptionId(index)}` as Path<T>}
+              register={register}
+              title={item.title}
+              description={item.description}
+              options={{ required: item.required }}
+            />
+          ))}
+        </fieldset>
       )}
     </div>
   );

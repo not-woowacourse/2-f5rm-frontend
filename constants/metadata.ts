@@ -1,11 +1,6 @@
 import type { ComponentPropsWithoutRef } from 'react';
 
 import {
-  AlignCenter,
-  AlignJustify,
-  AlignLeft,
-  AlignRight,
-  Cake,
   CakeSlice,
   Carrot,
   CloudRain,
@@ -19,25 +14,32 @@ import {
 import { type Schema } from 'zod';
 import * as z from 'zod';
 
-import type { Selector } from '@/components/ui';
+import type { Checkbox, Selector, TextInput } from '@/components/ui';
 
-type Answer = {
+type DefaultAnswer = {
   restrictions: Schema;
-} & (
-  | {
-      type: 'text' | 'url' | 'email' | 'number' | 'datetime';
-      label: string;
-      placeholder: string;
-      prefix?: string;
-      suffix?: string;
-    }
-  | {
-      type: 'select';
-      options: ComponentPropsWithoutRef<typeof Selector>['items'];
-      // TODO: label 중복되는 것 같으면 따로 빼기
-      label: string;
-    }
-);
+};
+
+type TextInputAnswer = DefaultAnswer & {
+  type: 'text' | 'url' | 'email' | 'number' | 'datetime';
+} & Pick<
+    ComponentPropsWithoutRef<typeof TextInput>,
+    'title' | 'placeholder' | 'prefix' | 'suffix'
+  >;
+
+type SelectAnswer = DefaultAnswer & {
+  type: 'select';
+} & Pick<ComponentPropsWithoutRef<typeof Selector>, 'items' | 'title'>;
+
+type MultiSelectAnswer = {
+  type: 'multiselect';
+  options: (Pick<
+    ComponentPropsWithoutRef<typeof Checkbox>,
+    'title' | 'description'
+  > & { required?: boolean })[];
+};
+
+type Answer = TextInputAnswer | SelectAnswer | MultiSelectAnswer;
 
 interface Item {
   question: string;
@@ -55,26 +57,12 @@ export const metadata: Metadata = {
   title: '설문',
   description: '테스트 설문입니다.',
   items: [
-    // {
-    //   question: '첫 번째 질문',
-    //   description: '안녕하세요, 첫 번째 질문입니다.',
-    //   answer: {
-    //     type: 'url',
-    //     label: '블로그 주소',
-    //     placeholder: 'blog.te6.in',
-    //     prefix: 'https://',
-    //     restrictions: z
-    //       .string()
-    //       .url('URL 형태가 맞는지 확인해주세요.')
-    //       .optional(),
-    //   },
-    // },
     {
       question: '나이',
       description: '안녕하세요, 나이가 어떻게 되시나요?',
       answer: {
         type: 'number',
-        label: '나이',
+        title: '나이',
         prefix: '만',
         suffix: '세',
         placeholder: '23',
@@ -96,8 +84,8 @@ export const metadata: Metadata = {
       description: '가장 선호하는 날씨를 선택해주세요.',
       answer: {
         type: 'select',
-        label: '날씨',
-        options: [
+        title: '날씨',
+        items: [
           { value: '맑은 날', icon: Sun },
           { value: '비 오는 날', icon: CloudRain },
           { value: '눈 오는 날', icon: Snowflake },
@@ -105,6 +93,20 @@ export const metadata: Metadata = {
         restrictions: z
           .enum(['맑은 날', '비 오는 날', '눈 오는 날'])
           .optional(),
+      },
+    },
+    {
+      question: '약관 동의',
+      description: '약관에 동의해보세요.',
+      answer: {
+        type: 'multiselect',
+        options: [
+          { title: '이용 약관 동의', required: true },
+          {
+            title: '개인 정보 처리 방침 동의',
+            description: '당신의 개인정보를 판매합니다.',
+          },
+        ],
       },
     },
     {
@@ -118,8 +120,8 @@ export const metadata: Metadata = {
                     당근: 주황색의 뿌리 채소로, 단맛이 나며 비타민A가 풍부합니다. 생으로 먹거나 요리에 넣어 이용합니다.`,
       answer: {
         type: 'select',
-        label: '음식',
-        options: [
+        title: '음식',
+        items: [
           { value: '피자', icon: Pizza },
           { value: '크로아상', icon: Croissant },
           { value: '케이크', icon: CakeSlice },
