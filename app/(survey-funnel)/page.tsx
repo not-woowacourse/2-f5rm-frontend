@@ -21,60 +21,35 @@ import EnterMostImportantValueStep from '@/app/(survey-funnel)/_steps/enter-most
 import StartStep from '@/app/(survey-funnel)/_steps/start-step';
 import SubmitStep from '@/app/(survey-funnel)/_steps/submit-step';
 import { HookFormDevTool__Csr } from '@/components/etc/HookFormDevTool__Csr';
+import { Gender, Mbti, MostImportantValue } from '@/constants/form';
 import { ROUTES } from '@/constants/routes';
 import { SEARCH_PARAMS } from '@/constants/search-params';
 import { formsApiInstance } from '@/lib/api-instance';
-import { cn, noop } from '@/lib/utils';
+import { cn, getValues, noop } from '@/lib/utils';
+import { type ValuesOf } from '@/types/utility';
 
-enum Step {
-  Start = 'start',
-  EnterAge = 'enter-age',
-  EnterGender = 'enter-gender',
-  EnterMbti = 'enter-mbti',
-  EnterChildhoodDream = 'enter-childhood-dream',
-  EnterMostImportantValue = 'enter-most-important-value',
-  EnterLifeSatisfaction = 'enter-life-satisfaction',
-  EnterEmail = 'enter-email',
-  Submit = 'submit',
-}
+const Step = {
+  Start: 'start',
+  EnterAge: 'enter-age',
+  EnterGender: 'enter-gender',
+  EnterMbti: 'enter-mbti',
+  EnterChildhoodDream: 'enter-childhood-dream',
+  EnterMostImportantValue: 'enter-most-important-value',
+  EnterLifeSatisfaction: 'enter-life-satisfaction',
+  EnterEmail: 'enter-email',
+  Submit: 'submit',
+} as const;
 
-const gender = ['female', 'male', 'etc'] as const;
-
-const mbti = [
-  'INTJ',
-  'INTP',
-  'ENTJ',
-  'ENTP',
-  'INFJ',
-  'INFP',
-  'ENFJ',
-  'ENFP',
-  'ISTJ',
-  'ISFJ',
-  'ESTJ',
-  'ESFJ',
-  'ISTP',
-  'ISFP',
-  'ESTP',
-  'ESFP',
-] as const;
-
-const mostImportantValue = [
-  'money',
-  'family',
-  'fame',
-  'career',
-  'etc',
-] as const;
+type Step = ValuesOf<typeof Step>;
 
 const initialStep = Step.Start;
 
 const formSchema = z.object({
   age: z.coerce.number().int().gte(1).lte(122),
-  gender: z.enum(gender),
-  mbti: z.enum(mbti),
+  gender: z.enum(getValues(Gender)),
+  mbti: z.enum(getValues(Mbti)),
   childhoodDream: z.string().min(1),
-  mostImportantValue: z.enum(mostImportantValue),
+  mostImportantValue: z.enum(getValues(MostImportantValue)),
   lifeSatisfaction: z.coerce.number().int().gte(1).lte(10),
   email: z.string().email().optional(),
 });
