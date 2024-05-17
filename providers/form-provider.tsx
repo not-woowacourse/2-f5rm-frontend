@@ -13,7 +13,7 @@ export type MultiSelectValues = Metadata['items'][number]['answer']['type'];
 
 export type FormValues = Record<
   Metadata['items'][number]['id'],
-  string | number | string[] | number[] | MultiSelectValues
+  string | number | string[] | number[] | MultiSelectValues | null
 >;
 
 export function FormProvider({ children }: PropsWithChildren) {

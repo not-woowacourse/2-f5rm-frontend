@@ -40,7 +40,7 @@ export function FormLayout({ step }: FormLayoutProps) {
           getFieldState(item.id).invalid === false
         : // if not, make sure some input has been provided
           // @ts-expect-error
-          answer !== NaN && answer !== '';
+          answer !== null && answer !== NaN && answer !== '';
 
   return (
     <div className="flex h-screen max-w-lg flex-grow flex-col">
@@ -57,8 +57,7 @@ export function FormLayout({ step }: FormLayoutProps) {
           error={errors[item.id]}
         />
         <div className="flex gap-2.5">
-          {/* TODO: make skip button work */}
-          {canSkip && <SkipButton step={step} />}
+          {canSkip && <SkipButton step={step} itemId={item.id} />}
           <NextButton step={step} itemId={item.id} disabled={!canConfirm} />
         </div>
       </section>
