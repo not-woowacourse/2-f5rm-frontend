@@ -1,5 +1,6 @@
 import { redirect } from 'next/navigation';
 
+import { Confirm } from '@/components/Confirm';
 import { FormLayout } from '@/components/FormLayout';
 import { Landing } from '@/components/Landing';
 import type { STEP_SEARCHPARAM_KEY } from '@/constants/constants';
@@ -27,7 +28,7 @@ export default function HomePage({ searchParams: { step } }: HomePageProps) {
   if (stepNumber < 0 || stepNumber > items.length) redirect('/');
 
   // "/?step=10" (step: 0~9)
-  if (stepNumber === items.length) return <div>End</div>;
+  if (stepNumber === items.length) return <Confirm />;
 
   // "/?step=5" (step: 0~9)
 

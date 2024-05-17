@@ -15,6 +15,7 @@ import { Paragraphs } from '@/components/Paragraphs';
 import { SkipButton } from '@/components/SkipButton';
 import { LOCALSTORAGE_KEY } from '@/constants/constants';
 import { metadata } from '@/constants/metadata';
+import { currentStorage } from '@/lib/storage';
 import { getOptionId, getQuestionId } from '@/lib/utils';
 
 interface FormLayoutProps {
@@ -51,34 +52,6 @@ export function FormLayout({ step }: FormLayoutProps) {
 
   const router = useRouter();
   const pathname = usePathname();
-
-  const currentStorage = () => {
-    const storage = window.localStorage.getItem(LOCALSTORAGE_KEY);
-
-    const expectedSchema = z.union([
-      z.record(
-        z.string().startsWith('question-'),
-        z.union([
-          z.string(),
-          z.number(),
-          z.record(z.string().startsWith('option-'), z.boolean()),
-        ]),
-      ),
-      z.null(),
-    ]);
-
-    const parsed = storage ? JSON.parse(storage) : null;
-
-    const result = expectedSchema.safeParse(parsed);
-
-    if (result.success === false) {
-      window.localStorage.removeItem(LOCALSTORAGE_KEY);
-      console.log(result.error.message);
-      return {};
-    }
-
-    return result.data ?? {};
-  };
 
   const onValid = (data: FormValues) => {
     const newData = { ...currentStorage(), ...data };
