@@ -1,25 +1,6 @@
-const FORM_ID = {
-  AGE: 'age',
-  GENDER: 'gender',
-  MBTI: 'mbti',
-  CHILDHOOD_DREAM: 'childhood-dream',
-  MOST_IMPORTANT_VALUE: 'most-important-value',
-  LIFE_SATISFACTION: 'life-satisfaction',
-  EMAIL: 'email',
-} as const;
+import z from 'zod';
 
-/**
- * @note formSchema의 key와 일치해야 합니다.
- */
-const FORM_NAME = {
-  AGE: 'age',
-  GENDER: 'gender',
-  MBTI: 'mbti',
-  CHILDHOOD_DREAM: 'childhoodDream',
-  MOST_IMPORTANT_VALUE: 'mostImportantValue',
-  LIFE_SATISFACTION: 'lifeSatisfaction',
-  EMAIL: 'email',
-} as const;
+import { getValues } from '@/lib/utils';
 
 /**
  * @note Enum을 삭제하였습니다.
@@ -63,4 +44,53 @@ const MostImportantValue = {
   Etc: 'etc',
 } as const;
 
-export { FORM_ID, FORM_NAME, Gender, Mbti, MostImportantValue };
+/**
+ * @note 최장수인의 나이는 122세입니다. 죄송합니다.
+ * @reference https://ko.wikipedia.org/wiki/최장수인
+ */
+const OLDEST_PERSON_AGE = 122;
+
+const formSchema = z.object({
+  age: z.coerce.number().int().positive().lte(OLDEST_PERSON_AGE),
+  gender: z.enum(getValues(Gender)),
+  mbti: z.enum(getValues(Mbti)),
+  childhoodDream: z.string().min(1),
+  mostImportantValue: z.enum(getValues(MostImportantValue)),
+  lifeSatisfaction: z.coerce.number().int().gte(1).lte(10),
+  email: z.string().email().optional(),
+});
+
+/**
+ * @note formSchema의 key와 일치해야 합니다.
+ */
+const FORM_NAME = {
+  AGE: 'age',
+  GENDER: 'gender',
+  MBTI: 'mbti',
+  CHILDHOOD_DREAM: 'childhoodDream',
+  MOST_IMPORTANT_VALUE: 'mostImportantValue',
+  LIFE_SATISFACTION: 'lifeSatisfaction',
+  EMAIL: 'email',
+} as const;
+
+const FORM_ID = {
+  AGE: 'age',
+  GENDER: 'gender',
+  MBTI: 'mbti',
+  CHILDHOOD_DREAM: 'childhood-dream',
+  MOST_IMPORTANT_VALUE: 'most-important-value',
+  LIFE_SATISFACTION: 'life-satisfaction',
+  EMAIL: 'email',
+} as const;
+
+type FormValues = z.infer<typeof formSchema>;
+
+export {
+  FORM_ID,
+  FORM_NAME,
+  Gender,
+  Mbti,
+  MostImportantValue,
+  formSchema,
+  type FormValues,
+};

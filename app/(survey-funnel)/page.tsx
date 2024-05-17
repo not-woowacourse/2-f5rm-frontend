@@ -8,9 +8,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import { toast } from 'sonner';
-import z from 'zod';
 
-import { type CreateFormDto } from '@/__generated__/data-contracts';
 import EnterAgeStep from '@/app/(survey-funnel)/_steps/enter-age-step';
 import EnterChildhoodDreamStep from '@/app/(survey-funnel)/_steps/enter-childhood-dream-step';
 import EnterEmailStep from '@/app/(survey-funnel)/_steps/enter-email-step';
@@ -21,11 +19,12 @@ import EnterMostImportantValueStep from '@/app/(survey-funnel)/_steps/enter-most
 import StartStep from '@/app/(survey-funnel)/_steps/start-step';
 import SubmitStep from '@/app/(survey-funnel)/_steps/submit-step';
 import { HookFormDevTool__Csr } from '@/components/etc/HookFormDevTool__Csr';
-import { Gender, Mbti, MostImportantValue } from '@/constants/form';
+import { type FormValues, formSchema } from '@/constants/form';
+import { TOAST_MESSAGES } from '@/constants/messages';
 import { ROUTES } from '@/constants/routes';
 import { SEARCH_PARAMS } from '@/constants/search-params';
-import { formsApiInstance } from '@/lib/api-instance';
-import { cn, getValues, noop } from '@/lib/utils';
+import { axiosPostForm } from '@/lib/api-instance';
+import { cn, noop } from '@/lib/utils';
 import { type ValuesOf } from '@/types/utility';
 
 const Step = {
@@ -44,48 +43,29 @@ type Step = ValuesOf<typeof Step>;
 
 const initialStep = Step.Start;
 
-const formSchema = z.object({
-  age: z.coerce.number().int().gte(1).lte(122),
-  gender: z.enum(getValues(Gender)),
-  mbti: z.enum(getValues(Mbti)),
-  childhoodDream: z.string().min(1),
-  mostImportantValue: z.enum(getValues(MostImportantValue)),
-  lifeSatisfaction: z.coerce.number().int().gte(1).lte(10),
-  email: z.string().email().optional(),
-});
-
-type InferredFormSchema = z.infer<typeof formSchema>;
-
-const postForm = async (createFormDto: CreateFormDto) => {
-  await formsApiInstance.formsControllerCreate(
-    process.env.NEXT_PUBLIC_SCHEMA_SLUG!,
-    createFormDto,
-  );
-};
-
 const RootPage = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const methods = useForm<InferredFormSchema>({
+  const methods = useForm<FormValues>({
     resolver: zodResolver(formSchema),
   });
 
   const { mutate } = useMutation({
-    mutationFn: postForm,
+    mutationFn: axiosPostForm,
     onSuccess: () => {
       methods.reset();
 
-      toast.success('설문이 제출되었습니다. 감사합니다!');
+      toast.success(TOAST_MESSAGES.SURVEY_SUBMITTED);
 
       /* TODO: make a result page */
       router.push(ROUTES.ROOT);
     },
     onError: () => {
-      toast.error('설문 제출에 실패했습니다. 나중에 다시 시도해주세요.');
+      toast.error(TOAST_MESSAGES.SURVEY_SUBMIT_FAILED);
     },
   });
 
-  const onSubmit = (values: InferredFormSchema) => {
+  const onSubmit = (values: FormValues) => {
     mutate({ data: values });
   };
 
@@ -163,4 +143,3 @@ const RootPage = () => {
 };
 
 export default RootPage;
-export type { InferredFormSchema };
