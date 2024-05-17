@@ -7,6 +7,7 @@ import { Header } from '@/components/Header';
 import { NextButton } from '@/components/NextButton';
 import { Paragraphs } from '@/components/Paragraphs';
 import { SkipButton } from '@/components/SkipButton';
+import { Title } from '@/components/Title';
 import { metadata } from '@/constants/metadata';
 import { getOptionId, getQuestionId } from '@/lib/utils';
 import type { FormValues, MultiSelectValues } from '@/providers/form-provider';
@@ -52,10 +53,8 @@ export function FormLayout({ step }: FormLayoutProps) {
   return (
     <div className="flex h-screen max-w-lg flex-grow flex-col">
       <Header text={metadata.title} showBackButton step={step} />
-      <section className="flex flex-grow flex-col gap-3.5 overflow-auto p-4 pt-14 text-base-600 dark:text-base-dark-400">
-        <h1 className="text-balance text-2xl font-bold text-base-700 dark:text-base-dark-300">
-          {item.question}
-        </h1>
+      <section className="flex flex-grow flex-col gap-3.5 overflow-auto p-4 pt-16 text-base-600 dark:text-base-dark-400">
+        <Title text={item.question} />
         <Paragraphs text={item.description} />
       </section>
       <section className="flex flex-col gap-3 p-3.5">
