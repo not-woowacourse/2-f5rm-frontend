@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { AnswerInput } from '@/components/AnswerInput';
@@ -18,29 +19,50 @@ interface FormLayoutProps {
 export function FormLayout({ step }: FormLayoutProps) {
   const item = metadata.items[step];
 
-  const {
-    watch,
-    formState: { errors },
-    getFieldState,
-  } = useFormContext<FormValues>();
+  const { watch, trigger, formState, getFieldState } =
+    useFormContext<FormValues>();
+  const userInput = watch(item.id);
 
-  const answer = watch(item.id);
+  const { isDirty, error, invalid } = getFieldState(item.id, formState);
+
+  // multiselect의 모든 option이 optional임
+  const multiselectCanSkip =
+    item.answer.type === 'multiselect' &&
+    item.answer.options.every((option) => option.required !== true);
+
+  // multiselect에서 tick한 옵션이 없음
+  const multiselectNoneTicked =
+    item.answer.type === 'multiselect' &&
+    Object.values(userInput ?? {}).every((value) => value === false);
 
   const canSkip =
     item.answer.type === 'multiselect'
-      ? // TODO: if all multiselect items are optional, make the question skippable
-        false
+      ? multiselectCanSkip
       : item.answer.restrictions.isOptional();
 
   const canConfirm =
-    answer === undefined
+    // register 아직 안 된 경우 다음 버튼 비활성화
+    userInput === undefined
       ? false
       : item.answer.type === 'multiselect'
-        ? // if multiselect, make sure every required box is ticked
-          getFieldState(item.id).invalid === false
-        : // if not, make sure some input has been provided
-          // @ts-expect-error
-          answer !== null && answer !== NaN && answer !== '';
+        ? // multiselect의 모든 option이 optional이면서 아무 옵션도 선택되지 않은 경우
+          // 다음 버튼 비활성화
+          multiselectCanSkip && multiselectNoneTicked
+          ? false
+          : // multiselect에 required option이 있는 경우,
+            // 모든 required option을 tick해야 다음 버튼 활성화
+            invalid === false
+        : // multiselect 아닌 경우, input 건드려야 다음 버튼 활성화
+          isDirty === true;
+
+  console.log({ multiselectCanSkip, multiselectNoneTicked, invalid });
+
+  useEffect(() => {
+    // 첫 렌더에서는 invalid가 항상 false이므로 다음 버튼 비활성화를 위해 trigger()
+    if (item.answer.type === 'multiselect') {
+      trigger();
+    }
+  }, [trigger, item]);
 
   return (
     <div className="flex h-screen max-w-lg flex-grow flex-col">
@@ -54,7 +76,7 @@ export function FormLayout({ step }: FormLayoutProps) {
           name={item.id}
           answer={item.answer}
           required={!canSkip}
-          error={errors[item.id]}
+          error={error}
         />
         <div className="flex gap-2.5">
           {canSkip && <SkipButton step={step} itemId={item.id} />}

@@ -28,6 +28,7 @@ export function AnswerInput<T extends FormValues>({
         answer.type === 'number' ||
         answer.type === 'url') && (
         <TextInput
+          key={name}
           name={name}
           register={register}
           options={{
@@ -45,6 +46,7 @@ export function AnswerInput<T extends FormValues>({
       )}
       {answer.type === 'select' && (
         <Selector
+          key={name}
           name={name}
           register={register}
           options={{ required }}
@@ -57,9 +59,9 @@ export function AnswerInput<T extends FormValues>({
       )}
       {answer.type === 'multiselect' && (
         <fieldset className="flex flex-col gap-2.5">
-          {answer.options.map((option, index) => (
+          {answer.options.map((option) => (
             <Checkbox
-              key={index}
+              key={`${name}.${option.id}`}
               name={`${name}.${option.id}`}
               register={register}
               title={option.title}

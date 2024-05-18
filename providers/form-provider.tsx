@@ -37,7 +37,7 @@ export function FormProvider({ children }: PropsWithChildren) {
 
   const methods = useForm<FormValues>({
     resolver: zodResolver(restrictions),
-    mode: 'onChange',
+    mode: 'all',
   });
 
   return <RHFProvider {...methods}>{children}</RHFProvider>;
