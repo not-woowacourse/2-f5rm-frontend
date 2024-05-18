@@ -86,7 +86,7 @@ export function FormLayout({ step }: FormLayoutProps) {
           error={error}
         />
         <ButtonContainer>
-          {canSkip && <SkipButton step={step} itemId={item.id} />}
+          {canSkip && <SkipButton step={step} item={item} />}
           <NextButton step={step} itemId={item.id} disabled={!canConfirm} />
         </ButtonContainer>
       </BottomInteractionArea>

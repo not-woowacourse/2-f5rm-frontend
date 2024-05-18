@@ -7,13 +7,13 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 
 import { metadata } from '@/constants/metadata';
-import type { Metadata } from '@/constants/types';
+import type { Metadata, MultiSelectOption } from '@/constants/types';
 
-export type MultiSelectValues = Metadata['items'][number]['answer']['type'];
+type MultiSelectValues = Record<MultiSelectOption['id'], boolean>;
 
 export type FormValues = Record<
   Metadata['items'][number]['id'],
-  string | number | string[] | number[] | MultiSelectValues | undefined
+  string | number | MultiSelectValues | undefined
 >;
 
 export function FormProvider({ children }: PropsWithChildren) {

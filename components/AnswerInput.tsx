@@ -25,6 +25,7 @@ export function AnswerInput<T extends FormValues>({
     <div>
       {(answer.type === 'text' ||
         answer.type === 'email' ||
+        answer.type === 'tel' ||
         answer.type === 'number' ||
         answer.type === 'url') && (
         <TextInput

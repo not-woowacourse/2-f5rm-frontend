@@ -9,8 +9,7 @@ type DefaultRestriction = {
 };
 
 type TextInputAnswer = DefaultRestriction & {
-  type: 'text' | 'url' | 'email' | 'number' | 'datetime';
-  isArray?: boolean;
+  type: 'text' | 'url' | 'email' | 'number' | 'tel';
 } & Pick<
     ComponentPropsWithoutRef<typeof TextInput>,
     'title' | 'placeholder' | 'prefix' | 'suffix'

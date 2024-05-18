@@ -14,16 +14,22 @@ import type { FormValues } from '@/providers/form-provider';
 
 interface SkipButtonProps {
   step: number;
-  itemId: Metadata['items'][number]['id'];
+  item: Metadata['items'][number];
 }
 
-export function SkipButton({ step, itemId }: SkipButtonProps) {
+export function SkipButton({ step, item }: SkipButtonProps) {
   const router = useRouter();
 
   const { setValue } = useFormContext<FormValues>();
 
   const onClick = () => {
-    setValue(itemId, undefined);
+    if (item.answer.type === 'multiselect') {
+      item.answer.options.forEach((option) =>
+        setValue(`${item.id}.${option.id}`, false),
+      );
+    } else {
+      setValue(item.id, undefined);
+    }
 
     router.push(withQuery(DEFAULT_PATHNAME, { step: step + 1 }));
   };
