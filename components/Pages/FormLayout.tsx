@@ -22,7 +22,7 @@ interface FormLayoutProps {
 export function FormLayout({ step }: FormLayoutProps) {
   const item = metadata.items[step];
 
-  const { watch, trigger, formState, getFieldState } =
+  const { watch, trigger, formState, getFieldState, setFocus } =
     useFormContext<FormValues>();
   const userInput = watch(item.id);
 
@@ -62,8 +62,12 @@ export function FormLayout({ step }: FormLayoutProps) {
     // 첫 렌더에서는 invalid가 항상 false이므로 다음 버튼 비활성화를 위해 trigger()
     if (item.answer.type === 'multiselect') {
       trigger();
+
+      setFocus(`${item.id}.${item.answer.options[0].id}`);
     }
-  }, [trigger, item]);
+
+    setFocus(item.id);
+  }, [trigger, setFocus, item]);
 
   return (
     <>
