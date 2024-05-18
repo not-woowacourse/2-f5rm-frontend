@@ -12,6 +12,7 @@ import {
 import { z } from 'zod';
 
 import type { Metadata } from '@/constants/types';
+import { validateDuplicates } from '@/lib/utils';
 
 const items: Metadata['items'] = [
   {
@@ -106,7 +107,7 @@ const items: Metadata['items'] = [
         { value: '비 오는 날', icon: CloudRain },
         { value: '눈 오는 날', icon: Snowflake },
       ],
-      restrictions: z.enum(['맑은 날', '비 오는 날', '눈 오는 날']).optional(),
+      restrictions: z.enum(['맑은 날', '비 오는 날', '눈 오는 날']).nullish(),
     },
   },
   {
@@ -142,6 +143,39 @@ const items: Metadata['items'] = [
           }
         },
       }),
+    },
+  },
+  {
+    id: 'invitations',
+    question: '친구 초대',
+    description: '초대할 친구들의 이메일 주소를 입력해주세요.',
+    answer: {
+      type: 'email',
+      isArray: true,
+      placeholder: 'me@example.com',
+      title: '이메일 주소',
+      restrictions: z
+        .array(z.record(z.literal('invitations'), z.string().email()))
+        .min(2, '최소 두 명을 초대해야 합니다.')
+        .max(5, '최대 다섯 명까지 초대할 수 있습니다.')
+        .refine(validateDuplicates, '중복된 이메일 주소가 있습니다.'),
+      // if skippable, mark .nullish()
+    },
+  },
+  {
+    id: 'songs',
+    question: '음악 고르기',
+    description:
+      '친구들과 함께 듣고 싶은 음악을 알려주세요.\n없다면 적지 않아도 괜찮습니다.',
+    answer: {
+      type: 'text',
+      isArray: true,
+      placeholder: '애국가',
+      title: '제목',
+      restrictions: z
+        .array(z.record(z.literal('songs'), z.string()))
+        .max(5, '최대 다섯 개까지 입력할 수 있습니다.')
+        .nullish(),
     },
   },
 ];

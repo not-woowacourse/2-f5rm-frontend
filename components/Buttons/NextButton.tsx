@@ -23,9 +23,11 @@ type NextButtonProps = Required<
 export function NextButton({ disabled, step, itemId }: NextButtonProps) {
   const router = useRouter();
 
-  const { getFieldState } = useFormContext<FormValues>();
+  const { trigger, getFieldState } = useFormContext<FormValues>();
 
-  const onClick = () => {
+  const onClick = async () => {
+    await trigger();
+
     const { invalid } = getFieldState(itemId);
 
     if (invalid) return;

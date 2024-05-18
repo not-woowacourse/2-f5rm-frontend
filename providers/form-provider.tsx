@@ -35,9 +35,22 @@ export function FormProvider({ children }: PropsWithChildren) {
     ),
   );
 
+  const arrayItemsDefaultValues = metadata.items
+    .filter(
+      (item) =>
+        (item.answer.type === 'email' ||
+          item.answer.type === 'number' ||
+          item.answer.type === 'tel' ||
+          item.answer.type === 'text' ||
+          item.answer.type === 'url') &&
+        item.answer.isArray,
+    )
+    .reduce((acc, item) => ({ ...acc, [item.id]: [{ [item.id]: '' }] }), {});
+
   const methods = useForm<FormValues>({
     resolver: zodResolver(restrictions),
     mode: 'all',
+    defaultValues: arrayItemsDefaultValues,
   });
 
   return <RHFProvider {...methods}>{children}</RHFProvider>;

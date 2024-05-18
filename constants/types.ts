@@ -10,6 +10,7 @@ type DefaultRestriction = {
 
 type TextInputAnswer = DefaultRestriction & {
   type: 'text' | 'url' | 'email' | 'number' | 'tel';
+  isArray?: boolean;
 } & Pick<
     ComponentPropsWithoutRef<typeof TextInput>,
     'title' | 'placeholder' | 'prefix' | 'suffix'

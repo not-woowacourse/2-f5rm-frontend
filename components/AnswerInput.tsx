@@ -2,6 +2,7 @@
 
 import { type FieldError, type Path, useFormContext } from 'react-hook-form';
 
+import { FieldInput } from '@/components/ArrayInput';
 import { Checkbox, Selector, TextInput } from '@/components/ui';
 import type { metadata } from '@/constants/metadata';
 import { type FormValues } from '@/providers/form-provider';
@@ -27,24 +28,32 @@ export function AnswerInput<T extends FormValues>({
         answer.type === 'email' ||
         answer.type === 'tel' ||
         answer.type === 'number' ||
-        answer.type === 'url') && (
-        <TextInput
-          key={name}
-          name={name}
-          register={register}
-          options={{
-            valueAsNumber: answer.type === 'number',
-            // this is only to show the red asterisk
-            required,
-          }}
-          type={answer.type}
-          title={answer.title}
-          placeholder={answer.placeholder}
-          prefix={answer.prefix}
-          suffix={answer.suffix}
-          error={error?.message}
-        />
-      )}
+        answer.type === 'url') &&
+        (answer.isArray ? (
+          <FieldInput
+            key={name}
+            answer={answer}
+            name={name}
+            register={register}
+          />
+        ) : (
+          <TextInput
+            key={name}
+            name={name}
+            register={register}
+            options={{
+              valueAsNumber: answer.type === 'number',
+              // this is only to show the red asterisk
+              required,
+            }}
+            type={answer.type}
+            title={answer.title}
+            placeholder={answer.placeholder}
+            prefix={answer.prefix}
+            suffix={answer.suffix}
+            error={error?.message}
+          />
+        ))}
       {answer.type === 'select' && (
         <Selector
           key={name}
