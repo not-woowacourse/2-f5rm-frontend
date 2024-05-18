@@ -1,7 +1,7 @@
-import { BottomInteractionArea } from '@/components/BottomInteractionArea';
-import { InfoArea } from '@/components/InfoArea';
+import { StartButton } from '@/components/Buttons/StartButton';
+import { BottomInteractionArea } from '@/components/Containers/BottomInteractionArea';
+import { InfoArea } from '@/components/Containers/InfoArea';
 import { Paragraphs } from '@/components/Paragraphs';
-import { StartButton } from '@/components/StartButton';
 import { Title } from '@/components/Title';
 import { metadata } from '@/constants/metadata';
 

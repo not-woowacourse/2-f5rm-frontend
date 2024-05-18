@@ -26,11 +26,13 @@ const items: Metadata['items'] = [
       placeholder: '23',
       restrictions: z
         .number({
-          errorMap: (issue, ctx) => {
-            // handles NaN (empty input)
-            if (issue.code === z.ZodIssueCode.invalid_type)
-              return { message: '나이를 입력해주세요.' };
-            else return { message: ctx.defaultError };
+          errorMap: ({ code }, { defaultError }) => {
+            switch (code) {
+              case z.ZodIssueCode.invalid_type:
+                return { message: '나이를 입력해주세요.' };
+              default:
+                return { message: defaultError };
+            }
           },
         })
         .min(10, '너무 어립니다.')
@@ -77,6 +79,37 @@ const items: Metadata['items'] = [
   },
   // 3
   {
+    id: 'optional-terms',
+    question: '선택 약관 동의',
+    description: '선택 약관에 동의해보세요.',
+    answer: {
+      type: 'multiselect',
+      options: [
+        {
+          id: 'term-1',
+          title: '선택 약관 1',
+          description: '선택 약관 1에 동의합니다.',
+        },
+        {
+          id: 'term-2',
+          title: '선택 약관 2',
+          description: '선택 약관 2에 동의합니다.',
+        },
+        {
+          id: 'term-3',
+          title: '선택 약관 3',
+          description: '선택 약관 3에 동의합니다.',
+        },
+        {
+          id: 'term-4',
+          title: '선택 약관 4',
+          description: '선택 약관 4에 동의합니다.',
+        },
+      ],
+    },
+  },
+  // 4
+  {
     id: 'food',
     question: '음식',
     description: `가장 좋아하는 음식을 선택해주세요.
@@ -98,10 +131,15 @@ const items: Metadata['items'] = [
         { value: '당근', icon: Carrot },
       ],
       restrictions: z.enum(['피자', '케이크', '쿠키'], {
-        errorMap: (issue, ctx) => {
-          if (issue.code === z.ZodIssueCode.invalid_enum_value)
-            return { message: '허락되지 않은 음식입니다.' };
-          else return { message: ctx.defaultError };
+        errorMap: ({ code }, { defaultError }) => {
+          switch (code) {
+            case z.ZodIssueCode.invalid_type:
+              return { message: '음식을 선택해주세요.' };
+            case z.ZodIssueCode.invalid_enum_value:
+              return { message: '허락되지 않은 음식입니다.' };
+            default:
+              return { message: defaultError };
+          }
         },
       }),
     },

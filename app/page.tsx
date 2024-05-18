@@ -1,9 +1,9 @@
 import { redirect } from 'next/navigation';
 
-import { Confirm } from '@/components/Confirm';
-import { FormLayout } from '@/components/FormLayout';
-import { Landing } from '@/components/Landing';
-import { Success } from '@/components/Success';
+import { Confirm } from '@/components/Pages/Confirm';
+import { FormLayout } from '@/components/Pages/FormLayout';
+import { Landing } from '@/components/Pages/Landing';
+import { Success } from '@/components/Pages/Success';
 import {
   DEFAULT_PATHNAME,
   type STEP_SEARCHPARAM_KEY,

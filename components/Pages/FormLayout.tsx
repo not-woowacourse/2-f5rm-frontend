@@ -4,13 +4,13 @@ import { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { AnswerInput } from '@/components/AnswerInput';
-import { BottomInteractionArea } from '@/components/BottomInteractionArea';
-import { ButtonContainer } from '@/components/ButtonContainer';
+import { NextButton } from '@/components/Buttons/NextButton';
+import { SkipButton } from '@/components/Buttons/SkipButton';
+import { BottomInteractionArea } from '@/components/Containers/BottomInteractionArea';
+import { ButtonContainer } from '@/components/Containers/ButtonContainer';
+import { InfoArea } from '@/components/Containers/InfoArea';
 import { Header } from '@/components/Header';
-import { InfoArea } from '@/components/InfoArea';
-import { NextButton } from '@/components/NextButton';
 import { Paragraphs } from '@/components/Paragraphs';
-import { SkipButton } from '@/components/SkipButton';
 import { Title } from '@/components/Title';
 import { metadata } from '@/constants/metadata';
 import type { FormValues } from '@/providers/form-provider';
