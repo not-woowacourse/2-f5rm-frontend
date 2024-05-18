@@ -22,6 +22,9 @@ export default function HomePage({ searchParams: { step } }: HomePageProps) {
   // "/?step=3&step=4"
   if (typeof step !== 'string') redirect(DEFAULT_PATHNAME);
 
+  // "/?step=success"
+  if (step === 'success') return <Success />;
+
   // here I'm not using parseInt since parseInt("123abc", 10) === 123
   const stepNumber = +step;
 

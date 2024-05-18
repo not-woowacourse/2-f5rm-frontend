@@ -77,7 +77,7 @@ export function SubmitButton() {
             </div>
             <Paragraphs
               text={error.message}
-              className="mb-4 text-sm text-base-600 dark:text-base-400"
+              className="mb-4 text-balance text-center text-sm text-base-600 dark:text-base-400"
             />
             <Button
               text="다시 시도"
