@@ -4,7 +4,10 @@ import { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { AnswerInput } from '@/components/AnswerInput';
+import { BottomInteractionArea } from '@/components/BottomInteractionArea';
+import { ButtonContainer } from '@/components/ButtonContainer';
 import { Header } from '@/components/Header';
+import { InfoArea } from '@/components/InfoArea';
 import { NextButton } from '@/components/NextButton';
 import { Paragraphs } from '@/components/Paragraphs';
 import { SkipButton } from '@/components/SkipButton';
@@ -65,24 +68,24 @@ export function FormLayout({ step }: FormLayoutProps) {
   }, [trigger, item]);
 
   return (
-    <div className="flex h-screen max-w-lg flex-grow flex-col">
-      <Header text={metadata.title} showBackButton step={step} />
-      <section className="flex flex-grow flex-col gap-3.5 overflow-auto p-4 pt-16 text-base-600 dark:text-base-dark-400">
+    <>
+      <Header text={metadata.title} showBackButton />
+      <InfoArea hasHeader>
         <Title text={item.question} />
         <Paragraphs text={item.description} />
-      </section>
-      <section className="flex flex-col gap-3 p-3.5">
+      </InfoArea>
+      <BottomInteractionArea>
         <AnswerInput
           name={item.id}
           answer={item.answer}
           required={!canSkip}
           error={error}
         />
-        <div className="flex gap-2.5">
+        <ButtonContainer>
           {canSkip && <SkipButton step={step} itemId={item.id} />}
           <NextButton step={step} itemId={item.id} disabled={!canConfirm} />
-        </div>
-      </section>
-    </div>
+        </ButtonContainer>
+      </BottomInteractionArea>
+    </>
   );
 }

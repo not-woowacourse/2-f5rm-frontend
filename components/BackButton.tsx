@@ -1,28 +1,29 @@
 'use client';
 
-import { usePathname, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 import { ArrowLeft } from 'lucide-react';
-import { withQuery } from 'ufo';
+
+import { Button } from '@/components/ui';
 
 interface BackButtonProps {
-  step: number;
+  large?: boolean;
 }
 
-export function BackButton({ step }: BackButtonProps) {
+export function BackButton({ large = false }: BackButtonProps) {
   const router = useRouter();
-  const pathname = usePathname();
+
+  // anchor href로 구현 가능하나 form 정보를 잃기 때문에 router로 구현
+  const onClick = router.back;
+
+  if (large) return <Button text="뒤로" icon={ArrowLeft} onClick={onClick} />;
 
   return (
     <button
       type="button"
       aria-label="이전 화면으로 이동"
       className="m-2 flex aspect-square items-center justify-center rounded-lg outline-none ring-accent-500 ring-offset-2 ring-offset-body transition-all hover:bg-base-300 focus-visible:ring-2 active:scale-95 dark:ring-offset-body-dark dark:hover:bg-base-dark-700"
-      onClick={() =>
-        router.push(
-          withQuery(pathname, { step: step === 0 ? undefined : step - 1 }),
-        )
-      }
+      onClick={onClick}
     >
       <ArrowLeft />
     </button>
