@@ -23,7 +23,7 @@ export function SkipButton({ step, itemId }: SkipButtonProps) {
   const { setValue } = useFormContext<FormValues>();
 
   const onClick = () => {
-    setValue(itemId, null);
+    setValue(itemId, undefined);
 
     router.push(withQuery(PATHNAME, { step: step + 1 }));
   };
