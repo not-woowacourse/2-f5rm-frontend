@@ -14,7 +14,9 @@ export function Success() {
       <Header text={metadata.title} showBackButton />
       <InfoArea hasHeader>
         <Title text="제출 완료" />
-        <Paragraphs text="제출이 완료되었습니다. 설문에 참여해 주셔서 감사합니다." />
+        <Paragraphs
+          text={`제출이 성공적으로 완료되었습니다.\n설문에 참여해 주셔서 다시 한 번 감사드립니다.`}
+        />
       </InfoArea>
       <BottomInteractionArea>
         <ButtonContainer>

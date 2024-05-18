@@ -15,9 +15,63 @@ import type { Metadata } from '@/constants/types';
 
 const items: Metadata['items'] = [
   {
+    id: 'terms',
+    question: '약관 동의',
+    description: '설문 시작에 앞서, 약관에 동의해주세요.',
+    answer: {
+      type: 'multiselect',
+      options: [
+        {
+          id: 'terms',
+          title: '설문 조사 내용 활용에 대한 동의',
+          required: true,
+        },
+        {
+          id: 'privacy',
+          title: '개인 정보 처리 방침 동의',
+          description: '당신의 개인정보를 판매합니다.',
+        },
+      ],
+    },
+  },
+  {
+    id: 'optional-terms',
+    question: '선택 약관 동의',
+    description: '선택 약관에 동의해보세요.',
+    answer: {
+      type: 'multiselect',
+      options: [
+        {
+          id: 'term-1',
+          title: '모든 동물의 소리를 완벽하게 흉내 내겠습니다.',
+          description:
+            '고양이 울음소리부터 코끼리 배꼽구멍소리까지 모든 동물 소리를 정확히 따라 해야 하겠습니다.',
+        },
+        {
+          id: 'term-2',
+          title: '달에 사는 우주인의 방문을 환영하겠습니다.',
+          description:
+            '응답자의 집에 불시에 방문하는 외계인을 거부할 수 없음에 동의하며, 최대한 친절하게 대해야 하겠습니다.',
+        },
+        {
+          id: 'term-3',
+          title: '고대 이집트 피라미드 건축 기술을 완전히 이해하겠습니다.',
+          description:
+            '피라미드 건축 원리와 기하학적 원리를 완벽히 이해하지 못하면 설문에 참여할 수 없음에 동의합니다.',
+        },
+        {
+          id: 'term-4',
+          title: '태양계 9개 행성의 위성 이름을 모두 외우겠습니다.',
+          description:
+            '명왕성의 5개 위성을 포함해 태양계 행성 위성 이름을 하나도 빼먹지 말고 전부 암기하겠습니다.',
+        },
+      ],
+    },
+  },
+  {
     id: 'age',
     question: '나이',
-    description: '안녕하세요, 나이가 어떻게 되시나요?',
+    description: '나이가 어떻게 되시나요? 만 나이로 응답해주세요.',
     answer: {
       type: 'number',
       title: '나이',
@@ -35,15 +89,15 @@ const items: Metadata['items'] = [
             }
           },
         })
-        .min(10, '너무 어립니다.')
-        .max(200, '너무 많습니다.'),
+        .min(10, '너무 어려 설문에 참여할 수 없습니다.')
+        .max(200, '너무 많아 설문에 참여할 수 없습니다.'),
     },
   },
-  // 1
   {
     id: 'weather',
-    question: '날씨',
-    description: '가장 선호하는 날씨를 선택해주세요.',
+    question: '좋아하는 날씨',
+    description:
+      '가장 선호하는 날씨를 선택해주세요.\n선호하는 날씨가 없는 경우 선택하지 않으셔도 됩니다.',
     answer: {
       type: 'select',
       title: '날씨',
@@ -55,70 +109,16 @@ const items: Metadata['items'] = [
       restrictions: z.enum(['맑은 날', '비 오는 날', '눈 오는 날']).optional(),
     },
   },
-  // 2
-  {
-    id: 'terms',
-    question: '약관 동의',
-    description: '약관에 동의해보세요.',
-    answer: {
-      type: 'multiselect',
-      options: [
-        {
-          id: 'terms',
-          title: '이용 약관 동의',
-          description: '약관에 동의합니다.',
-          required: true,
-        },
-        {
-          id: 'privacy',
-          title: '개인 정보 처리 방침 동의',
-          description: '당신의 개인정보를 판매합니다.',
-        },
-      ],
-    },
-  },
-  // 3
-  {
-    id: 'optional-terms',
-    question: '선택 약관 동의',
-    description: '선택 약관에 동의해보세요.',
-    answer: {
-      type: 'multiselect',
-      options: [
-        {
-          id: 'term-1',
-          title: '선택 약관 1',
-          description: '선택 약관 1에 동의합니다.',
-        },
-        {
-          id: 'term-2',
-          title: '선택 약관 2',
-          description: '선택 약관 2에 동의합니다.',
-        },
-        {
-          id: 'term-3',
-          title: '선택 약관 3',
-          description: '선택 약관 3에 동의합니다.',
-        },
-        {
-          id: 'term-4',
-          title: '선택 약관 4',
-          description: '선택 약관 4에 동의합니다.',
-        },
-      ],
-    },
-  },
-  // 4
   {
     id: 'food',
-    question: '음식',
-    description: `가장 좋아하는 음식을 선택해주세요.
-                    피자: 밀가루 반죽 위에 토마토 소스, 치즈, 다양한 토핑이 얹혀 있는 이탈리아 요리입니다. 퍼지고 둥근 모양이 특징입니다.
-                    크로아상: 프랑스 전통 페이스트리로, 버터를 넣은 반죽을 여러 겹으로 만들어 구운 것입니다. 바삭바삭하고 부드러운 식감이 특징입니다.
-                    케이크: 밀가루, 설탕, 달걀, 버터 등을 주재료로 한 반죽을 구워 만든 디저트 종류입니다. 모양, 맛, 크기가 다양합니다.
-                    팝콘: 옥수수 알갱이를 열로 팽창시켜 만든 과자입니다. 폭신하고 바삭한 식감이 인기입니다.
-                    쿠키: 밀가루 반죽에 다양한 재료를 넣고 구운 작은 과자입니다. 단것, 딱딱한 것, 부드러운 것 등 다양한 종류가 있습니다.
-                    당근: 주황색의 뿌리 채소로, 단맛이 나며 비타민A가 풍부합니다. 생으로 먹거나 요리에 넣어 이용합니다.`,
+    question: '최애 음식',
+    description: `파티에 가지고 갈 음식을 선택해주세요.
+                  피자: 밀가루 반죽 위에 토마토 소스, 치즈, 다양한 토핑이 얹혀 있는 이탈리아 요리입니다. 퍼지고 둥근 모양이 특징입니다.
+                  크로아상: 프랑스 전통 페이스트리로, 버터를 넣은 반죽을 여러 겹으로 만들어 구운 것입니다. 바삭바삭하고 부드러운 식감이 특징입니다.
+                  케이크: 밀가루, 설탕, 달걀, 버터 등을 주재료로 한 반죽을 구워 만든 디저트 종류입니다. 모양, 맛, 크기가 다양합니다.
+                  팝콘: 옥수수 알갱이를 열로 팽창시켜 만든 과자입니다. 폭신하고 바삭한 식감이 인기입니다.
+                  쿠키: 밀가루 반죽에 다양한 재료를 넣고 구운 작은 과자입니다. 단것, 딱딱한 것, 부드러운 것 등 다양한 종류가 있습니다.
+                  당근: 주황색의 뿌리 채소로, 단맛이 나며 비타민A가 풍부합니다. 생으로 먹거나 요리에 넣어 이용합니다.`,
     answer: {
       type: 'select',
       title: '음식',
@@ -136,7 +136,7 @@ const items: Metadata['items'] = [
             case z.ZodIssueCode.invalid_type:
               return { message: '음식을 선택해주세요.' };
             case z.ZodIssueCode.invalid_enum_value:
-              return { message: '허락되지 않은 음식입니다.' };
+              return { message: '이 음식은 가지고 갈 수 없습니다.' };
             default:
               return { message: defaultError };
           }

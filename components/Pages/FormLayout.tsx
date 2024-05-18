@@ -38,6 +38,8 @@ export function FormLayout({ step }: FormLayoutProps) {
     item.answer.type === 'multiselect' &&
     Object.values(userInput ?? {}).every((value) => value === false);
 
+  // multiselect인 경우 모든 option이 optional이거나
+  // 이외 type인 경우 optional인 항목임
   const canSkip =
     item.answer.type === 'multiselect'
       ? multiselectCanSkip
