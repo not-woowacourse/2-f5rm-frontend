@@ -58,8 +58,6 @@ export function FormLayout({ step }: FormLayoutProps) {
         : // multiselect 아닌 경우, input 건드려야 다음 버튼 활성화
           isDirty === true;
 
-  console.log({ multiselectCanSkip, multiselectNoneTicked, invalid });
-
   useEffect(() => {
     // 첫 렌더에서는 invalid가 항상 false이므로 다음 버튼 비활성화를 위해 trigger()
     if (item.answer.type === 'multiselect') {

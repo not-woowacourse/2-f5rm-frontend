@@ -15,13 +15,11 @@ const metadata: Metadata = {
 const RootLayout = ({ children }: PropsWithChildren) => {
   return (
     <html lang="ko-KR">
-      <body className="break-keep bg-body dark:bg-body-dark">
-        <main className="flex w-full justify-center">
-          <div className="flex h-screen max-w-lg flex-grow flex-col">
-            <QueryProvider>
-              <FormProvider>{children}</FormProvider>
-            </QueryProvider>
-          </div>
+      <body className="bg-body dark:bg-body-dark">
+        <main className="mx-auto flex h-screen w-screen max-w-lg flex-col break-keep">
+          <QueryProvider>
+            <FormProvider>{children}</FormProvider>
+          </QueryProvider>
         </main>
       </body>
     </html>

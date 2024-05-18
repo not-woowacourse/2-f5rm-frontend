@@ -22,6 +22,10 @@ const config = {
       },
     },
     extend: {
+      height: {
+        // @ts-expect-error
+        screen: ['100vh', '100dvh'],
+      },
       fontFamily: {
         sans: [
           'Ubuntu\\ Sans',
