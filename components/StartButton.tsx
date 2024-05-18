@@ -4,7 +4,7 @@ import { ArrowRight } from 'lucide-react';
 import { withQuery } from 'ufo';
 
 import { Button } from '@/components/ui';
-import { PATHNAME } from '@/constants/constants';
+import { DEFAULT_PATHNAME } from '@/constants/constants';
 
 export function StartButton() {
   return (
@@ -12,7 +12,7 @@ export function StartButton() {
       primary
       text="시작"
       icon={ArrowRight}
-      href={withQuery(PATHNAME, { step: 0 })}
+      href={withQuery(DEFAULT_PATHNAME, { step: 0 })}
     />
   );
 }

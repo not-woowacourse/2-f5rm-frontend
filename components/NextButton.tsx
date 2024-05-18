@@ -9,7 +9,7 @@ import { ArrowRight } from 'lucide-react';
 import { withQuery } from 'ufo';
 
 import { Button } from '@/components/ui';
-import { PATHNAME } from '@/constants/constants';
+import { DEFAULT_PATHNAME } from '@/constants/constants';
 import type { Metadata } from '@/constants/types';
 import type { FormValues } from '@/providers/form-provider';
 
@@ -33,7 +33,7 @@ export function NextButton({ disabled, step, itemId }: NextButtonProps) {
     // anchor 태그로 구현해도 되지만,
     // invalid한 옵션을 선택해도 다음 버튼을 누를 수는 있게 하고 싶었음
     // 또, 폼 정보 잃는 문제
-    router.push(withQuery(PATHNAME, { step: step + 1 }));
+    router.push(withQuery(DEFAULT_PATHNAME, { step: step + 1 }));
   };
 
   return (
