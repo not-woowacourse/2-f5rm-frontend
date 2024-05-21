@@ -1,8 +1,13 @@
+import { redirect } from 'next/navigation';
+
 import { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { ChevronRight } from 'lucide-react';
+import { useSetRecoilState } from 'recoil';
+import { toast } from 'sonner';
 
+import { surveyFormValuesAtom } from '@/atoms/form-values-atom';
 import {
   AppBar,
   AppBarBack,
@@ -16,17 +21,52 @@ import {
   FormLabel,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { FORM_ID, FORM_NAME } from '@/constants/form';
+import { SURVEY_FORM_ID, SURVEY_FORM_NAME } from '@/constants/form';
+import { TOAST_MESSAGES } from '@/constants/messages';
+import { ROUTES } from '@/constants/routes';
 import { type PropsWithOnNext } from '@/types/props';
 
 const EnterLifeSatisfactionStep = ({ onNext }: PropsWithOnNext) => {
-  const { control, getFieldState, setFocus } = useFormContext();
+  const { control, getFieldState, setFocus, getValues } = useFormContext();
 
-  const { invalid } = getFieldState(FORM_NAME.LIFE_SATISFACTION);
+  const { invalid } = getFieldState(SURVEY_FORM_NAME.LIFE_SATISFACTION);
+
+  const setFormValues = useSetRecoilState(surveyFormValuesAtom);
+
+  const handleNext = () => {
+    if (onNext !== undefined) {
+      onNext();
+    }
+
+    const value = getValues(SURVEY_FORM_NAME.LIFE_SATISFACTION);
+
+    setFormValues((prev) => ({
+      ...prev,
+      [SURVEY_FORM_NAME.LIFE_SATISFACTION]: value,
+    }));
+  };
 
   useEffect(() => {
-    setFocus(FORM_NAME.LIFE_SATISFACTION);
+    setFocus(SURVEY_FORM_NAME.LIFE_SATISFACTION);
   }, [setFocus]);
+
+  useEffect(() => {
+    if (
+      [
+        SURVEY_FORM_NAME.AGE,
+        SURVEY_FORM_NAME.GENDER,
+        SURVEY_FORM_NAME.MBTI,
+        SURVEY_FORM_NAME.CHILDHOOD_DREAM,
+        SURVEY_FORM_NAME.MOST_IMPORTANT_VALUE,
+        // SURVEY_FORM_NAME.LIFE_SATISFACTION,
+        // SURVEY_FORM_NAME.EMAIL,
+      ].some((key) => getValues(key) === undefined)
+    ) {
+      toast.error(TOAST_MESSAGES.INVALID_STEP);
+
+      redirect(ROUTES.ROOT);
+    }
+  }, []);
 
   return (
     <div className="flex flex-col items-center gap-4">
@@ -43,11 +83,11 @@ const EnterLifeSatisfactionStep = ({ onNext }: PropsWithOnNext) => {
         </div>
         <FormField
           control={control}
-          name={FORM_NAME.LIFE_SATISFACTION}
+          name={SURVEY_FORM_NAME.LIFE_SATISFACTION}
           render={({ field }) => (
             <FormItem className="flex w-full flex-col">
               <FormLabel
-                htmlFor={FORM_ID.LIFE_SATISFACTION}
+                htmlFor={SURVEY_FORM_ID.LIFE_SATISFACTION}
                 className="text-sm text-white"
               >
                 만족도
@@ -56,7 +96,7 @@ const EnterLifeSatisfactionStep = ({ onNext }: PropsWithOnNext) => {
                 <Input
                   type="number"
                   inputMode="numeric"
-                  id={FORM_ID.LIFE_SATISFACTION}
+                  id={SURVEY_FORM_ID.LIFE_SATISFACTION}
                   min="1"
                   max="10"
                   placeholder="1 ~ 10"
@@ -71,7 +111,7 @@ const EnterLifeSatisfactionStep = ({ onNext }: PropsWithOnNext) => {
       <Button
         type="button"
         variant="secondary"
-        onClick={onNext}
+        onClick={handleNext}
         disabled={invalid}
         className="fixed inset-x-0 bottom-4 mx-auto w-full max-w-[calc(100vw-2rem)] sm:max-w-[calc(512px-2rem)]"
       >

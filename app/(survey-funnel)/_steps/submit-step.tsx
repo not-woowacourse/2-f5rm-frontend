@@ -1,6 +1,10 @@
+import { redirect } from 'next/navigation';
+
+import { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { CheckCircle, ChevronRight } from 'lucide-react';
+import { toast } from 'sonner';
 
 import {
   AppBar,
@@ -8,12 +12,34 @@ import {
   AppBarTitle,
 } from '@/components/additional-ui/app-bar';
 import { Button } from '@/components/ui/button';
+import { SURVEY_FORM_NAME } from '@/constants/form';
+import { TOAST_MESSAGES } from '@/constants/messages';
+import { ROUTES } from '@/constants/routes';
 import { type PropsWithOnNext } from '@/types/props';
 
 const SubmitStep = ({ onNext }: PropsWithOnNext) => {
   const {
     formState: { isSubmitting },
+    getValues,
   } = useFormContext();
+
+  useEffect(() => {
+    if (
+      [
+        SURVEY_FORM_NAME.AGE,
+        SURVEY_FORM_NAME.GENDER,
+        SURVEY_FORM_NAME.MBTI,
+        SURVEY_FORM_NAME.CHILDHOOD_DREAM,
+        SURVEY_FORM_NAME.MOST_IMPORTANT_VALUE,
+        SURVEY_FORM_NAME.LIFE_SATISFACTION,
+        // SURVEY_FORM_NAME.EMAIL,
+      ].some((key) => getValues(key) === undefined)
+    ) {
+      toast.error(TOAST_MESSAGES.INVALID_STEP);
+
+      redirect(ROUTES.ROOT);
+    }
+  }, []);
 
   return (
     <div className="flex flex-col items-center gap-4">

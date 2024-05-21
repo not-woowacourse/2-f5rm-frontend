@@ -50,7 +50,7 @@ const MOST_IMPORTANT_VALUE = {
  */
 const OLDEST_PERSON_AGE = 122;
 
-const formSchema = z.object({
+const surveyFormSchema = z.object({
   age: z.coerce.number().int().positive().lte(OLDEST_PERSON_AGE),
   gender: z.enum(getValues(GENDER)),
   mbti: z.enum(getValues(MBTI)),
@@ -61,9 +61,9 @@ const formSchema = z.object({
 });
 
 /**
- * @note formSchema의 key와 일치해야 합니다.
+ * @note surveyFormSchema의 key와 일치해야 합니다.
  */
-const FORM_NAME = {
+const SURVEY_FORM_NAME = {
   AGE: 'age',
   GENDER: 'gender',
   MBTI: 'mbti',
@@ -73,7 +73,7 @@ const FORM_NAME = {
   EMAIL: 'email',
 } as const;
 
-const FORM_ID = {
+const SURVEY_FORM_ID = {
   AGE: 'age',
   GENDER: 'gender',
   MBTI: 'mbti',
@@ -83,14 +83,27 @@ const FORM_ID = {
   EMAIL: 'email',
 } as const;
 
-type FormValues = z.infer<typeof formSchema>;
+type SurveyFormValues = z.infer<typeof surveyFormSchema>;
+
+const SURVEY_FUNNEL_STEP = {
+  START: 'start',
+  ENTER_AGE: 'enter-age',
+  ENTER_GENDER: 'enter-gender',
+  ENTER_MBTI: 'enter-mbti',
+  ENTER_CHILDHOOD_DREAM: 'enter-childhood-dream',
+  ENTER_MOST_IMPORTANT_VALUE: 'enter-most-important-value',
+  ENTER_LIFE_SATISFACTION: 'enter-life-satisfaction',
+  ENTER_EMAIL: 'enter-email',
+  SUBMIT: 'submit',
+} as const;
 
 export {
-  FORM_ID,
-  FORM_NAME,
   GENDER,
   MBTI,
   MOST_IMPORTANT_VALUE,
-  formSchema,
-  type FormValues,
+  SURVEY_FORM_ID,
+  SURVEY_FORM_NAME,
+  SURVEY_FUNNEL_STEP,
+  surveyFormSchema,
+  type SurveyFormValues,
 };

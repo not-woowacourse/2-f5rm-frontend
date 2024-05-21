@@ -1,7 +1,13 @@
+import { redirect } from 'next/navigation';
+
+import { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { ChevronRight } from 'lucide-react';
+import { useSetRecoilState } from 'recoil';
+import { toast } from 'sonner';
 
+import { surveyFormValuesAtom } from '@/atoms/form-values-atom';
 import {
   AppBar,
   AppBarBack,
@@ -13,13 +19,48 @@ import {
 } from '@/components/additional-ui/button-radio-group';
 import { Button } from '@/components/ui/button';
 import { FormControl, FormField } from '@/components/ui/form';
-import { FORM_NAME, MOST_IMPORTANT_VALUE } from '@/constants/form';
+import { MOST_IMPORTANT_VALUE, SURVEY_FORM_NAME } from '@/constants/form';
+import { TOAST_MESSAGES } from '@/constants/messages';
+import { ROUTES } from '@/constants/routes';
 import { type PropsWithOnNext } from '@/types/props';
 
 const EnterMostImportantValueStep = ({ onNext }: PropsWithOnNext) => {
-  const { control, getFieldState } = useFormContext();
+  const { control, getFieldState, getValues } = useFormContext();
 
-  const { invalid } = getFieldState(FORM_NAME.MOST_IMPORTANT_VALUE);
+  const { invalid } = getFieldState(SURVEY_FORM_NAME.MOST_IMPORTANT_VALUE);
+
+  const setFormValues = useSetRecoilState(surveyFormValuesAtom);
+
+  const handleNext = () => {
+    if (onNext !== undefined) {
+      onNext();
+    }
+
+    const value = getValues(SURVEY_FORM_NAME.MOST_IMPORTANT_VALUE);
+
+    setFormValues((prev) => ({
+      ...prev,
+      [SURVEY_FORM_NAME.MOST_IMPORTANT_VALUE]: value,
+    }));
+  };
+
+  useEffect(() => {
+    if (
+      [
+        SURVEY_FORM_NAME.AGE,
+        SURVEY_FORM_NAME.GENDER,
+        SURVEY_FORM_NAME.MBTI,
+        SURVEY_FORM_NAME.CHILDHOOD_DREAM,
+        // SURVEY_FORM_NAME.MOST_IMPORTANT_VALUE,
+        // SURVEY_FORM_NAME.LIFE_SATISFACTION,
+        // SURVEY_FORM_NAME.EMAIL,
+      ].some((key) => getValues(key) === undefined)
+    ) {
+      toast.error(TOAST_MESSAGES.INVALID_STEP);
+
+      redirect(ROUTES.ROOT);
+    }
+  }, []);
 
   return (
     <div className="flex flex-col items-center gap-4">
@@ -36,7 +77,7 @@ const EnterMostImportantValueStep = ({ onNext }: PropsWithOnNext) => {
         </div>
         <FormField
           control={control}
-          name={FORM_NAME.MOST_IMPORTANT_VALUE}
+          name={SURVEY_FORM_NAME.MOST_IMPORTANT_VALUE}
           render={({ field }) => (
             <FormControl>
               <ButtonRadioGroup
@@ -77,7 +118,7 @@ const EnterMostImportantValueStep = ({ onNext }: PropsWithOnNext) => {
       <Button
         type="button"
         variant="secondary"
-        onClick={onNext}
+        onClick={handleNext}
         disabled={invalid}
         className="fixed inset-x-0 bottom-4 mx-auto w-full max-w-[calc(100vw-2rem)] sm:max-w-[calc(512px-2rem)]"
       >

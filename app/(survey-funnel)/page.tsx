@@ -2,10 +2,11 @@
 
 import { useRouter } from 'next/navigation';
 
-import { FormProvider, useForm } from 'react-hook-form';
+import { FormProvider, type UseFormProps, useForm } from 'react-hook-form';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
+import { useResetRecoilState } from 'recoil';
 import { toast } from 'sonner';
 
 import EnterAgeStep from '@/app/(survey-funnel)/_steps/enter-age-step';
@@ -17,27 +18,35 @@ import EnterMbtiStep from '@/app/(survey-funnel)/_steps/enter-mbti-step';
 import EnterMostImportantValueStep from '@/app/(survey-funnel)/_steps/enter-most-important-value-step';
 import StartStep from '@/app/(survey-funnel)/_steps/start-step';
 import SubmitStep from '@/app/(survey-funnel)/_steps/submit-step';
+import { surveyFormValuesAtom } from '@/atoms/form-values-atom';
 import { HookFormDevTool__Csr } from '@/components/etc/HookFormDevTool__Csr';
-import { type FormValues, formSchema } from '@/constants/form';
+import {
+  SURVEY_FUNNEL_STEP,
+  type SurveyFormValues,
+  surveyFormSchema,
+} from '@/constants/form';
 import { TOAST_MESSAGES } from '@/constants/messages';
 import { ROUTES } from '@/constants/routes';
 import { useFunnel } from '@/hooks/use-funnel';
+import { useRecoilValue__Ssr } from '@/hooks/use-recoil-value__ssr';
 import { axiosPostForm } from '@/lib/api-instance';
 import { cn, getValues } from '@/lib/utils';
 
-const SURVEY_FUNNEL_STEP = {
-  START: 'start',
-  ENTER_AGE: 'enter-age',
-  ENTER_GENDER: 'enter-gender',
-  ENTER_MBTI: 'enter-mbti',
-  ENTER_CHILDHOOD_DREAM: 'enter-childhood-dream',
-  ENTER_MOST_IMPORTANT_VALUE: 'enter-most-important-value',
-  ENTER_LIFE_SATISFACTION: 'enter-life-satisfaction',
-  ENTER_EMAIL: 'enter-email',
-  SUBMIT: 'submit',
-} as const;
+const RootPage__SsrWrapper = () => {
+  const surveyFormValues = useRecoilValue__Ssr(surveyFormValuesAtom);
 
-const RootPage = () => {
+  if (surveyFormValues === null) {
+    return null;
+  }
+
+  return <RootPage defaultSurveyFormValues={surveyFormValues} />;
+};
+
+type RootPageProps = {
+  defaultSurveyFormValues: UseFormProps<SurveyFormValues>['defaultValues'];
+};
+
+const RootPage = ({ defaultSurveyFormValues }: RootPageProps) => {
   const router = useRouter();
 
   const { Funnel, setStep } = useFunnel({
@@ -45,14 +54,18 @@ const RootPage = () => {
     initialStep: SURVEY_FUNNEL_STEP.START,
   });
 
-  const methods = useForm<FormValues>({
-    resolver: zodResolver(formSchema),
+  const resetSurveyFormValues = useResetRecoilState(surveyFormValuesAtom);
+
+  const methods = useForm<SurveyFormValues>({
+    resolver: zodResolver(surveyFormSchema),
+    defaultValues: defaultSurveyFormValues,
   });
 
   const { mutate } = useMutation({
     mutationFn: axiosPostForm,
     onSuccess: () => {
       methods.reset();
+      resetSurveyFormValues();
 
       toast.success(TOAST_MESSAGES.SURVEY_SUBMITTED);
 
@@ -64,7 +77,7 @@ const RootPage = () => {
     },
   });
 
-  const onSubmit = (values: FormValues) => {
+  const onSubmit = (values: SurveyFormValues) => {
     mutate({ data: values });
   };
 
@@ -131,4 +144,4 @@ const RootPage = () => {
   );
 };
 
-export default RootPage;
+export default RootPage__SsrWrapper;
