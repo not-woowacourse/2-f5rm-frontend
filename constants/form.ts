@@ -11,37 +11,37 @@ import { getValues } from '@/lib/utils';
  * 결국 Enum을 import하고 실제로는 사용하지 않더라도 최종 번들에는 포함되는 것입니다.
  * @reference https://engineering.linecorp.com/ko/blog/typescript-enum-tree-shaking
  */
-const Gender = {
-  Female: 'female',
-  Male: 'male',
-  Etc: 'etc',
+const GENDER = {
+  FEMALE: 'female',
+  MALE: 'male',
+  ETC: 'etc',
 } as const;
 
-const Mbti = {
-  Intj: 'INTJ',
-  Intp: 'INTP',
-  Entj: 'ENTJ',
-  Entp: 'ENTP',
-  Infj: 'INFJ',
-  Infp: 'INFP',
-  Enfj: 'ENFJ',
-  Enfp: 'ENFP',
-  Istj: 'ISTJ',
-  Isfj: 'ISFJ',
-  Estj: 'ESTJ',
-  Esfj: 'ESFJ',
-  Istp: 'ISTP',
-  Isfp: 'ISFP',
-  Estp: 'ESTP',
-  Esfp: 'ESFP',
+const MBTI = {
+  INTJ: 'INTJ',
+  INTP: 'INTP',
+  ENTJ: 'ENTJ',
+  ENTP: 'ENTP',
+  INFJ: 'INFJ',
+  INFP: 'INFP',
+  ENFJ: 'ENFJ',
+  ENFP: 'ENFP',
+  ISTJ: 'ISTJ',
+  ISFJ: 'ISFJ',
+  ESTJ: 'ESTJ',
+  ESFJ: 'ESFJ',
+  ISTP: 'ISTP',
+  ISFP: 'ISFP',
+  ESTP: 'ESTP',
+  ESFP: 'ESFP',
 } as const;
 
-const MostImportantValue = {
-  Money: 'money',
-  Family: 'family',
-  Fame: 'fame',
-  Career: 'career',
-  Etc: 'etc',
+const MOST_IMPORTANT_VALUE = {
+  MONEY: 'money',
+  FAMILY: 'family',
+  FAME: 'fame',
+  CAREER: 'career',
+  ETC: 'etc',
 } as const;
 
 /**
@@ -52,10 +52,10 @@ const OLDEST_PERSON_AGE = 122;
 
 const formSchema = z.object({
   age: z.coerce.number().int().positive().lte(OLDEST_PERSON_AGE),
-  gender: z.enum(getValues(Gender)),
-  mbti: z.enum(getValues(Mbti)),
+  gender: z.enum(getValues(GENDER)),
+  mbti: z.enum(getValues(MBTI)),
   childhoodDream: z.string().min(1),
-  mostImportantValue: z.enum(getValues(MostImportantValue)),
+  mostImportantValue: z.enum(getValues(MOST_IMPORTANT_VALUE)),
   lifeSatisfaction: z.coerce.number().int().gte(1).lte(10),
   email: z.string().email().optional(),
 });
@@ -88,9 +88,9 @@ type FormValues = z.infer<typeof formSchema>;
 export {
   FORM_ID,
   FORM_NAME,
-  Gender,
-  Mbti,
-  MostImportantValue,
+  GENDER,
+  MBTI,
+  MOST_IMPORTANT_VALUE,
   formSchema,
   type FormValues,
 };

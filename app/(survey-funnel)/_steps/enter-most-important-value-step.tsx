@@ -13,7 +13,7 @@ import {
 } from '@/components/additional-ui/button-radio-group';
 import { Button } from '@/components/ui/button';
 import { FormControl, FormField } from '@/components/ui/form';
-import { FORM_NAME } from '@/constants/form';
+import { FORM_NAME, MOST_IMPORTANT_VALUE } from '@/constants/form';
 import { type PropsWithOnNext } from '@/types/props';
 
 const EnterMostImportantValueStep = ({ onNext }: PropsWithOnNext) => {
@@ -45,27 +45,29 @@ const EnterMostImportantValueStep = ({ onNext }: PropsWithOnNext) => {
                 className="flex w-full flex-col gap-2"
               >
                 <FormControl>
-                  <ButtonRadioGroupItem value="money">
+                  <ButtonRadioGroupItem value={MOST_IMPORTANT_VALUE.MONEY}>
                     돈, 물질적 풍요
                   </ButtonRadioGroupItem>
                 </FormControl>
                 <FormControl>
-                  <ButtonRadioGroupItem value="family">
+                  <ButtonRadioGroupItem value={MOST_IMPORTANT_VALUE.FAMILY}>
                     가족
                   </ButtonRadioGroupItem>
                 </FormControl>
                 <FormControl>
-                  <ButtonRadioGroupItem value="fame">
+                  <ButtonRadioGroupItem value={MOST_IMPORTANT_VALUE.FAME}>
                     명예, 인정받는 삶
                   </ButtonRadioGroupItem>
                 </FormControl>
                 <FormControl>
-                  <ButtonRadioGroupItem value="career">
+                  <ButtonRadioGroupItem value={MOST_IMPORTANT_VALUE.CAREER}>
                     커리어, 취업
                   </ButtonRadioGroupItem>
                 </FormControl>
                 <FormControl>
-                  <ButtonRadioGroupItem value="etc">기타</ButtonRadioGroupItem>
+                  <ButtonRadioGroupItem value={MOST_IMPORTANT_VALUE.ETC}>
+                    기타
+                  </ButtonRadioGroupItem>
                 </FormControl>
               </ButtonRadioGroup>
             </FormControl>

@@ -13,7 +13,7 @@ import {
 } from '@/components/additional-ui/button-radio-group';
 import { Button } from '@/components/ui/button';
 import { FormControl, FormField } from '@/components/ui/form';
-import { FORM_NAME } from '@/constants/form';
+import { FORM_NAME, GENDER } from '@/constants/form';
 import { type PropsWithOnNext } from '@/types/props';
 
 const EnterGenderStep = ({ onNext }: PropsWithOnNext) => {
@@ -43,15 +43,19 @@ const EnterGenderStep = ({ onNext }: PropsWithOnNext) => {
                 className="flex w-full flex-col gap-2"
               >
                 <FormControl>
-                  <ButtonRadioGroupItem value="female">
+                  <ButtonRadioGroupItem value={GENDER.FEMALE}>
                     여성
                   </ButtonRadioGroupItem>
                 </FormControl>
                 <FormControl>
-                  <ButtonRadioGroupItem value="male">남성</ButtonRadioGroupItem>
+                  <ButtonRadioGroupItem value={GENDER.MALE}>
+                    남성
+                  </ButtonRadioGroupItem>
                 </FormControl>
                 <FormControl>
-                  <ButtonRadioGroupItem value="etc">기타</ButtonRadioGroupItem>
+                  <ButtonRadioGroupItem value={GENDER.ETC}>
+                    기타
+                  </ButtonRadioGroupItem>
                 </FormControl>
               </ButtonRadioGroup>
             </FormControl>
