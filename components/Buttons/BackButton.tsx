@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, ArrowLeftToLine } from 'lucide-react';
 
 import { Button } from '@/components/ui';
 import { DEFAULT_PATHNAME } from '@/constants/constants';
@@ -25,7 +25,7 @@ export function BackButton({
     return (
       <Button
         text={toStart ? '처음으로' : '뒤로'}
-        icon={ArrowLeft}
+        icon={toStart ? ArrowLeftToLine : ArrowLeft}
         onClick={onClick}
       />
     );
