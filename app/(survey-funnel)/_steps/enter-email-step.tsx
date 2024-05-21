@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { ChevronRight } from 'lucide-react';
@@ -19,9 +20,13 @@ import { FORM_ID, FORM_NAME } from '@/constants/form';
 import { type PropsWithOnNext } from '@/types/props';
 
 const EnterEmailStep = ({ onNext }: PropsWithOnNext) => {
-  const { control, getFieldState } = useFormContext();
+  const { control, getFieldState, setFocus } = useFormContext();
 
   const { invalid } = getFieldState(FORM_NAME.EMAIL);
+
+  useEffect(() => {
+    setFocus(FORM_NAME.EMAIL);
+  }, [setFocus]);
 
   return (
     <div className="flex flex-col items-center gap-4">

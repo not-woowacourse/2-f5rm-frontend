@@ -1,3 +1,5 @@
 type ValuesOf<T> = T[keyof T];
 
-export type { ValuesOf };
+type NonEmptyArray<T> = [T, ...T[]];
+
+export type { ValuesOf, NonEmptyArray };

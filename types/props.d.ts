@@ -1,5 +1,5 @@
 type PropsWithOnNext = {
-  onNext: () => void;
+  onNext?: () => void;
 };
 
 type PropsWithClassName = {

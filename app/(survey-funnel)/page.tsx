@@ -1,8 +1,7 @@
 'use client';
 
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
-import { useCallback } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -22,30 +21,30 @@ import { HookFormDevTool__Csr } from '@/components/etc/HookFormDevTool__Csr';
 import { type FormValues, formSchema } from '@/constants/form';
 import { TOAST_MESSAGES } from '@/constants/messages';
 import { ROUTES } from '@/constants/routes';
-import { SEARCH_PARAMS } from '@/constants/search-params';
+import { FunnelStep, useFunnel } from '@/hooks/use-funnel';
 import { axiosPostForm } from '@/lib/api-instance';
-import { cn, noop } from '@/lib/utils';
-import { type ValuesOf } from '@/types/utility';
+import { cn, getValues } from '@/lib/utils';
 
-const Step = {
-  Start: 'start',
-  EnterAge: 'enter-age',
-  EnterGender: 'enter-gender',
-  EnterMbti: 'enter-mbti',
-  EnterChildhoodDream: 'enter-childhood-dream',
-  EnterMostImportantValue: 'enter-most-important-value',
-  EnterLifeSatisfaction: 'enter-life-satisfaction',
-  EnterEmail: 'enter-email',
-  Submit: 'submit',
+const SURVEY_FUNNEL_STEP = {
+  START: 'start',
+  ENTER_AGE: 'enter-age',
+  ENTER_GENDER: 'enter-gender',
+  ENTER_MBTI: 'enter-mbti',
+  ENTER_CHILDHOOD_DREAM: 'enter-childhood-dream',
+  ENTER_MOST_IMPORTANT_VALUE: 'enter-most-important-value',
+  ENTER_LIFE_SATISFACTION: 'enter-life-satisfaction',
+  ENTER_EMAIL: 'enter-email',
+  SUBMIT: 'submit',
 } as const;
-
-type Step = ValuesOf<typeof Step>;
-
-const initialStep = Step.Start;
 
 const RootPage = () => {
   const router = useRouter();
-  const searchParams = useSearchParams();
+
+  const { Funnel, setStep } = useFunnel({
+    steps: getValues(SURVEY_FUNNEL_STEP),
+    initialStep: SURVEY_FUNNEL_STEP.START,
+  });
+
   const methods = useForm<FormValues>({
     resolver: zodResolver(formSchema),
   });
@@ -69,28 +68,6 @@ const RootPage = () => {
     mutate({ data: values });
   };
 
-  const step = searchParams.get(SEARCH_PARAMS.FUNNEL_STEP) ?? initialStep;
-
-  const moveStep = (step: Step) => {
-    const queryString = createQueryString(SEARCH_PARAMS.FUNNEL_STEP, step);
-
-    router.push('?' + queryString);
-  };
-
-  /**
-   * @reference
-   * https://nextjs.org/docs/app/api-reference/functions/use-search-params#updating-searchparams
-   */
-  const createQueryString = useCallback(
-    (name: string, value: string) => {
-      const params = new URLSearchParams(searchParams.toString());
-      params.set(name, value);
-
-      return params.toString();
-    },
-    [searchParams],
-  );
-
   return (
     <main
       className={cn(
@@ -100,42 +77,54 @@ const RootPage = () => {
     >
       <FormProvider {...methods}>
         <HookFormDevTool__Csr control={methods.control} />
-        <form onSubmit={methods.handleSubmit(onSubmit)}>
-          <div className="px-4 py-4">
-            {step === Step.Start && (
-              <StartStep onNext={() => moveStep(Step.EnterAge)} />
-            )}
-            {step === Step.EnterAge && (
-              <EnterAgeStep onNext={() => moveStep(Step.EnterGender)} />
-            )}
-            {step === Step.EnterGender && (
-              <EnterGenderStep onNext={() => moveStep(Step.EnterMbti)} />
-            )}
-            {step === Step.EnterMbti && (
+        <form onSubmit={methods.handleSubmit(onSubmit)} className="p-4">
+          <Funnel>
+            <FunnelStep name={SURVEY_FUNNEL_STEP.START}>
+              <StartStep onNext={() => setStep(SURVEY_FUNNEL_STEP.ENTER_AGE)} />
+            </FunnelStep>
+            <FunnelStep name={SURVEY_FUNNEL_STEP.ENTER_AGE}>
+              <EnterAgeStep
+                onNext={() => setStep(SURVEY_FUNNEL_STEP.ENTER_GENDER)}
+              />
+            </FunnelStep>
+            <FunnelStep name={SURVEY_FUNNEL_STEP.ENTER_GENDER}>
+              <EnterGenderStep
+                onNext={() => setStep(SURVEY_FUNNEL_STEP.ENTER_MBTI)}
+              />
+            </FunnelStep>
+            <FunnelStep name={SURVEY_FUNNEL_STEP.ENTER_MBTI}>
               <EnterMbtiStep
-                onNext={() => moveStep(Step.EnterChildhoodDream)}
+                onNext={() => setStep(SURVEY_FUNNEL_STEP.ENTER_CHILDHOOD_DREAM)}
               />
-            )}
-            {step === Step.EnterChildhoodDream && (
+            </FunnelStep>
+            <FunnelStep name={SURVEY_FUNNEL_STEP.ENTER_CHILDHOOD_DREAM}>
               <EnterChildhoodDreamStep
-                onNext={() => moveStep(Step.EnterMostImportantValue)}
+                onNext={() =>
+                  setStep(SURVEY_FUNNEL_STEP.ENTER_MOST_IMPORTANT_VALUE)
+                }
               />
-            )}
-            {step === Step.EnterMostImportantValue && (
+            </FunnelStep>
+            <FunnelStep name={SURVEY_FUNNEL_STEP.ENTER_MOST_IMPORTANT_VALUE}>
               <EnterMostImportantValueStep
-                onNext={() => moveStep(Step.EnterLifeSatisfaction)}
+                onNext={() =>
+                  setStep(SURVEY_FUNNEL_STEP.ENTER_LIFE_SATISFACTION)
+                }
               />
-            )}
-            {step === Step.EnterLifeSatisfaction && (
+            </FunnelStep>
+            <FunnelStep name={SURVEY_FUNNEL_STEP.ENTER_LIFE_SATISFACTION}>
               <EnterLifeSatisfactionStep
-                onNext={() => moveStep(Step.EnterEmail)}
+                onNext={() => setStep(SURVEY_FUNNEL_STEP.ENTER_EMAIL)}
               />
-            )}
-            {step === Step.EnterEmail && (
-              <EnterEmailStep onNext={() => moveStep(Step.Submit)} />
-            )}
-            {step === Step.Submit && <SubmitStep onNext={noop} />}
-          </div>
+            </FunnelStep>
+            <FunnelStep name={SURVEY_FUNNEL_STEP.ENTER_EMAIL}>
+              <EnterEmailStep
+                onNext={() => setStep(SURVEY_FUNNEL_STEP.SUBMIT)}
+              />
+            </FunnelStep>
+            <FunnelStep name={SURVEY_FUNNEL_STEP.SUBMIT}>
+              <SubmitStep />
+            </FunnelStep>
+          </Funnel>
         </form>
       </FormProvider>
     </main>

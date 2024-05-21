@@ -1,7 +1,7 @@
 import { type PropsWithChildren, Suspense } from 'react';
 
-const SurveyFunnelLayout = ({ children }: PropsWithChildren) => {
+const SurveyFunnelLayout__Suspense = ({ children }: PropsWithChildren) => {
   return <Suspense>{children}</Suspense>;
 };
 
-export default SurveyFunnelLayout;
+export default SurveyFunnelLayout__Suspense;
