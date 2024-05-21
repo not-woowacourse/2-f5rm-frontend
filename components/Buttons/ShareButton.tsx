@@ -1,6 +1,7 @@
 'use client';
 
 import { Share } from 'lucide-react';
+import { withQuery } from 'ufo';
 
 import { Button } from '@/components/ui';
 import { metadata } from '@/constants/metadata';
@@ -15,7 +16,7 @@ export function ShareButton() {
   const onClick = () => {
     navigator.share({
       text: `설문을 공유합니다: ${metadata.title}`,
-      url: window.location.origin,
+      url: withQuery(window.location.href, { step: undefined }),
     });
   };
 
