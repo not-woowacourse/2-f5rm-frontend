@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation';
 
 import { ArrowLeft, ArrowLeftToLine } from 'lucide-react';
+import { withoutLeadingSlash } from 'ufo';
 
 import { Button } from '@/components/ui';
 import { DEFAULT_PATHNAME } from '@/constants/constants';
@@ -19,7 +20,9 @@ export function BackButton({
   const router = useRouter();
 
   // anchor href로 구현 가능하나 form 정보를 잃기 때문에 router로 구현
-  const onClick = toStart ? () => router.push(DEFAULT_PATHNAME) : router.back;
+  const onClick = toStart
+    ? () => router.push(withoutLeadingSlash(DEFAULT_PATHNAME))
+    : router.back;
 
   if (large)
     return (

@@ -106,7 +106,7 @@ export function SubmitButton() {
             primary
             text="처음으로"
             icon={ArrowLeftToLine}
-            href={DEFAULT_PATHNAME}
+            href={withoutLeadingSlash(DEFAULT_PATHNAME)}
           />
         </div>
       </FullScreenOverlay>
@@ -129,7 +129,7 @@ export function SubmitButton() {
               <Button
                 text="처음으로"
                 icon={ArrowLeftToLine}
-                href={DEFAULT_PATHNAME}
+                href={withoutLeadingSlash(DEFAULT_PATHNAME)}
               />
               <Button
                 text="다시 시도"
