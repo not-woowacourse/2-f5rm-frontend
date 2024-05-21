@@ -1,6 +1,6 @@
 import { te6TailwindPreset } from '@te6/ui';
 import type { Config } from 'tailwindcss';
-import { blue, neutral } from 'tailwindcss/colors';
+import { teal, zinc } from 'tailwindcss/colors';
 import { fontFamily } from 'tailwindcss/defaultTheme';
 
 const config = {
@@ -36,13 +36,13 @@ const config = {
       },
       colors: {
         body: {
-          DEFAULT: neutral[50],
-          dark: neutral[950],
+          DEFAULT: zinc[50],
+          dark: zinc[950],
         },
-        base: neutral,
-        'base-dark': neutral,
-        primary: blue,
-        accent: blue,
+        base: zinc,
+        'base-dark': zinc,
+        primary: teal,
+        accent: teal,
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',
