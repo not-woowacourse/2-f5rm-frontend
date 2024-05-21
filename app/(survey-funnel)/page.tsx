@@ -21,7 +21,7 @@ import { HookFormDevTool__Csr } from '@/components/etc/HookFormDevTool__Csr';
 import { type FormValues, formSchema } from '@/constants/form';
 import { TOAST_MESSAGES } from '@/constants/messages';
 import { ROUTES } from '@/constants/routes';
-import { FunnelStep, useFunnel } from '@/hooks/use-funnel';
+import { useFunnel } from '@/hooks/use-funnel';
 import { axiosPostForm } from '@/lib/api-instance';
 import { cn, getValues } from '@/lib/utils';
 
@@ -79,51 +79,51 @@ const RootPage = () => {
         <HookFormDevTool__Csr control={methods.control} />
         <form onSubmit={methods.handleSubmit(onSubmit)} className="p-4">
           <Funnel>
-            <FunnelStep name={SURVEY_FUNNEL_STEP.START}>
+            <Funnel.Step name={SURVEY_FUNNEL_STEP.START}>
               <StartStep onNext={() => setStep(SURVEY_FUNNEL_STEP.ENTER_AGE)} />
-            </FunnelStep>
-            <FunnelStep name={SURVEY_FUNNEL_STEP.ENTER_AGE}>
+            </Funnel.Step>
+            <Funnel.Step name={SURVEY_FUNNEL_STEP.ENTER_AGE}>
               <EnterAgeStep
                 onNext={() => setStep(SURVEY_FUNNEL_STEP.ENTER_GENDER)}
               />
-            </FunnelStep>
-            <FunnelStep name={SURVEY_FUNNEL_STEP.ENTER_GENDER}>
+            </Funnel.Step>
+            <Funnel.Step name={SURVEY_FUNNEL_STEP.ENTER_GENDER}>
               <EnterGenderStep
                 onNext={() => setStep(SURVEY_FUNNEL_STEP.ENTER_MBTI)}
               />
-            </FunnelStep>
-            <FunnelStep name={SURVEY_FUNNEL_STEP.ENTER_MBTI}>
+            </Funnel.Step>
+            <Funnel.Step name={SURVEY_FUNNEL_STEP.ENTER_MBTI}>
               <EnterMbtiStep
                 onNext={() => setStep(SURVEY_FUNNEL_STEP.ENTER_CHILDHOOD_DREAM)}
               />
-            </FunnelStep>
-            <FunnelStep name={SURVEY_FUNNEL_STEP.ENTER_CHILDHOOD_DREAM}>
+            </Funnel.Step>
+            <Funnel.Step name={SURVEY_FUNNEL_STEP.ENTER_CHILDHOOD_DREAM}>
               <EnterChildhoodDreamStep
                 onNext={() =>
                   setStep(SURVEY_FUNNEL_STEP.ENTER_MOST_IMPORTANT_VALUE)
                 }
               />
-            </FunnelStep>
-            <FunnelStep name={SURVEY_FUNNEL_STEP.ENTER_MOST_IMPORTANT_VALUE}>
+            </Funnel.Step>
+            <Funnel.Step name={SURVEY_FUNNEL_STEP.ENTER_MOST_IMPORTANT_VALUE}>
               <EnterMostImportantValueStep
                 onNext={() =>
                   setStep(SURVEY_FUNNEL_STEP.ENTER_LIFE_SATISFACTION)
                 }
               />
-            </FunnelStep>
-            <FunnelStep name={SURVEY_FUNNEL_STEP.ENTER_LIFE_SATISFACTION}>
+            </Funnel.Step>
+            <Funnel.Step name={SURVEY_FUNNEL_STEP.ENTER_LIFE_SATISFACTION}>
               <EnterLifeSatisfactionStep
                 onNext={() => setStep(SURVEY_FUNNEL_STEP.ENTER_EMAIL)}
               />
-            </FunnelStep>
-            <FunnelStep name={SURVEY_FUNNEL_STEP.ENTER_EMAIL}>
+            </Funnel.Step>
+            <Funnel.Step name={SURVEY_FUNNEL_STEP.ENTER_EMAIL}>
               <EnterEmailStep
                 onNext={() => setStep(SURVEY_FUNNEL_STEP.SUBMIT)}
               />
-            </FunnelStep>
-            <FunnelStep name={SURVEY_FUNNEL_STEP.SUBMIT}>
+            </Funnel.Step>
+            <Funnel.Step name={SURVEY_FUNNEL_STEP.SUBMIT}>
               <SubmitStep />
-            </FunnelStep>
+            </Funnel.Step>
           </Funnel>
         </form>
       </FormProvider>

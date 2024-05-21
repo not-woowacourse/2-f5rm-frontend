@@ -85,14 +85,20 @@ const useFunnel = <Steps extends NonEmptyArray<string>>({
 
   const Funnel = useMemo(
     () =>
-      Object.assign(function (props: FunnelProps<Steps>) {
-        // eslint-disable-next-line react-hooks/rules-of-hooks
-        const searchParams = useSearchParams();
+      Object.assign(
+        function (props: FunnelProps<Steps>) {
+          // eslint-disable-next-line react-hooks/rules-of-hooks
+          const searchParams = useSearchParams();
 
-        const step = searchParams.get(SEARCH_PARAMS.FUNNEL_STEP) ?? initialStep;
+          const step =
+            searchParams.get(SEARCH_PARAMS.FUNNEL_STEP) ?? initialStep;
 
-        return <TargetFunnel<Steps> steps={steps} step={step} {...props} />;
-      }, {}),
+          return <TargetFunnel<Steps> steps={steps} step={step} {...props} />;
+        },
+        {
+          Step: FunnelStep,
+        },
+      ),
 
     /**
      * @note useMemo를 사용하지 않으면 입력 변경 시마다 새로 컴포넌트가 생성되어 input focus를 잃어버립니다.
@@ -128,4 +134,4 @@ const useFunnel = <Steps extends NonEmptyArray<string>>({
   } as const;
 };
 
-export { FunnelStep, useFunnel };
+export { useFunnel };
