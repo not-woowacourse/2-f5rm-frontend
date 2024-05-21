@@ -8,7 +8,7 @@ import { useFormContext } from 'react-hook-form';
 import { useMutation } from '@tanstack/react-query';
 import { FullScreenOverlay } from '@te6/ui';
 import { ArrowLeftToLine, Check, CircleAlert, RotateCcw } from 'lucide-react';
-import { withQuery } from 'ufo';
+import { withQuery, withoutLeadingSlash } from 'ufo';
 
 import { Paragraphs } from '@/components/Paragraphs';
 import { Button } from '@/components/ui';
@@ -54,7 +54,9 @@ export function SubmitButton() {
     onMutate: () => setShowingError(false),
     onError: () => setShowingError(true),
     onSuccess: () =>
-      router.push(withQuery(DEFAULT_PATHNAME, { step: 'success' })),
+      router.push(
+        withoutLeadingSlash(withQuery(DEFAULT_PATHNAME, { step: 'success' })),
+      ),
   });
 
   const onValid = (formData: FormValues) => {

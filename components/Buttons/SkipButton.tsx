@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useFormContext } from 'react-hook-form';
 
 import { SkipForward } from 'lucide-react';
-import { withQuery } from 'ufo';
+import { withQuery, withoutLeadingSlash } from 'ufo';
 
 import { Button } from '@/components/ui';
 import { DEFAULT_PATHNAME } from '@/constants/constants';
@@ -31,7 +31,9 @@ export function SkipButton({ step, item }: SkipButtonProps) {
       setValue(item.id, undefined);
     }
 
-    router.push(withQuery(DEFAULT_PATHNAME, { step: step + 1 }));
+    router.push(
+      withoutLeadingSlash(withQuery(DEFAULT_PATHNAME, { step: step + 1 })),
+    );
   };
 
   return <Button text="건너뛰기" icon={SkipForward} onClick={onClick} />;
