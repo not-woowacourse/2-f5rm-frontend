@@ -155,7 +155,12 @@ const items: Metadata['items'] = [
       placeholder: 'me@example.com',
       title: '이메일 주소',
       restrictions: z
-        .array(z.record(z.literal('invitations'), z.string().email()))
+        .array(
+          z.record(
+            z.literal('invitations'),
+            z.string().email('이메일 주소가 올바른지 확인해주세요.'),
+          ),
+        )
         .min(2, '최소 두 명을 초대해야 합니다.')
         .max(5, '최대 다섯 명까지 초대할 수 있습니다.')
         .refine(validateDuplicates, '중복된 이메일 주소가 있습니다.'),
