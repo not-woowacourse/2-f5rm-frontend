@@ -28,23 +28,27 @@ export function SubmitButton() {
   const [showingInvalid, setShowingInvalid] = useState(false);
 
   const { mutate, isPending, error } = useMutation({
-    mutationFn: async (formData: FormValues) => {
-      const { status, json } = await fetch(`${API_URL}/forms/${FORM_ID}`, {
+    mutationFn: async (formData: unknown) => {
+      const { status } = await fetch(`${API_URL}/forms/${FORM_ID}`, {
         method: 'POST',
-        headers: { 'client-name': CLIENT_NAME },
-        body: JSON.stringify(formData),
+        headers: {
+          'client-name': CLIENT_NAME,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ data: formData }),
       });
 
       switch (status) {
         case 201:
-          // not used
-          return await json();
+          return;
         case 400:
           throw new Error(`제출된 값이 ${FORM_ID} 스키마와 맞지 않습니다.`);
         case 401:
           throw new Error(`${CLIENT_NAME} 클라이언트를 찾을 수 없습니다.`);
         case 404:
           throw new Error(`${FORM_ID} 이름으로 등록된 스키마가 없습니다.`);
+        default:
+          throw new Error(error?.message ?? '오류가 발생했습니다.');
       }
     },
     onMutate: () => setShowingError(false),
@@ -54,8 +58,24 @@ export function SubmitButton() {
   });
 
   const onValid = (formData: FormValues) => {
-    // POST 전 구조 수정이 좀 필요함
-    mutate(formData);
+    const mapped = Object.fromEntries(
+      Object.entries(formData).map((entry) => {
+        // make { value: [{ value: 3 }, { value: 4 }, { value: 5 }] }
+        // into { value: [3, 4, 5] }
+        if (Array.isArray(entry[1])) {
+          return [entry[0], entry[1].flatMap((item) => Object.values(item))];
+        }
+
+        // stringify objects that are not arrays
+        if (typeof entry[1] === 'object') {
+          return [entry[0], JSON.stringify(entry[1])];
+        }
+
+        return entry;
+      }),
+    );
+
+    mutate(mapped);
   };
 
   const onInvalid = () => {
