@@ -7,9 +7,10 @@ import { useFormContext } from 'react-hook-form';
 
 import { useMutation } from '@tanstack/react-query';
 import { FullScreenOverlay } from '@te6/ui';
-import { ArrowLeftToLine, Check, CircleAlert, RotateCcw } from 'lucide-react';
+import { Check, CircleAlert, RotateCcw } from 'lucide-react';
 import { withQuery, withoutLeadingSlash } from 'ufo';
 
+import { BackButton } from '@/components/Buttons/BackButton';
 import { Paragraphs } from '@/components/Paragraphs';
 import { Button } from '@/components/ui';
 import {
@@ -80,11 +81,11 @@ export function SubmitButton() {
     mutate(mapped);
   };
 
-  const onInvalid = () => {
+  const onIncomplete = () => {
     setShowingInvalid(true);
   };
 
-  const onSubmitClick = handleSubmit(onValid, onInvalid);
+  const onSubmitClick = handleSubmit(onValid, onIncomplete);
 
   return (
     <>
@@ -99,15 +100,10 @@ export function SubmitButton() {
             <div>오류</div>
           </div>
           <Paragraphs
-            text="응답 내용이 올바르지 않습니다. 다시 응답하신 후 제출해주세요."
+            text="모든 필수 항목에 대해 답변하지 않으셨습니다. 다시 응답하신 후 제출해주세요."
             className="mb-4 text-center text-sm text-base-600 dark:text-base-400"
           />
-          <Button
-            primary
-            text="처음으로"
-            icon={ArrowLeftToLine}
-            href={withoutLeadingSlash(DEFAULT_PATHNAME)}
-          />
+          <BackButton large toStart primary />
         </div>
       </FullScreenOverlay>
       {error && (
@@ -126,11 +122,7 @@ export function SubmitButton() {
               className="mb-4 text-center text-sm text-base-600 dark:text-base-400"
             />
             <div className="grid w-full grid-cols-1 gap-2 sm:grid-cols-2">
-              <Button
-                text="처음으로"
-                icon={ArrowLeftToLine}
-                href={withoutLeadingSlash(DEFAULT_PATHNAME)}
-              />
+              <BackButton large toStart />
               <Button
                 text="다시 시도"
                 icon={RotateCcw}

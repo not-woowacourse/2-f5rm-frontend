@@ -2,31 +2,51 @@
 
 import { useRouter } from 'next/navigation';
 
+import type { ComponentPropsWithoutRef } from 'react';
+import { useFormContext } from 'react-hook-form';
+
 import { ArrowLeft, ArrowLeftToLine } from 'lucide-react';
 import { withoutLeadingSlash } from 'ufo';
 
 import { Button } from '@/components/ui';
 import { DEFAULT_PATHNAME } from '@/constants/constants';
+import { type FormValues } from '@/providers/form-provider';
 
-interface BackButtonProps {
-  large?: boolean;
+type BackButtonProps = (
+  | (Pick<ComponentPropsWithoutRef<typeof Button>, 'primary'> & {
+      large: true;
+    })
+  | {
+      primary?: never;
+      large?: false;
+    }
+) & {
   toStart?: boolean;
-}
+  reset?: boolean;
+};
 
 export function BackButton({
+  primary,
   large = false,
   toStart = false,
+  reset = false,
 }: BackButtonProps) {
   const router = useRouter();
+  const { reset: resetForm } = useFormContext<FormValues>();
 
   // anchor href로 구현 가능하나 form 정보를 잃기 때문에 router로 구현
-  const onClick = toStart
-    ? () => router.push(withoutLeadingSlash(DEFAULT_PATHNAME))
-    : router.back;
+  const onClick = () => {
+    reset && resetForm();
+
+    toStart
+      ? router.push(withoutLeadingSlash(DEFAULT_PATHNAME))
+      : router.back();
+  };
 
   if (large)
     return (
       <Button
+        primary={primary}
         text={toStart ? '처음으로' : '뒤로'}
         icon={toStart ? ArrowLeftToLine : ArrowLeft}
         onClick={onClick}
