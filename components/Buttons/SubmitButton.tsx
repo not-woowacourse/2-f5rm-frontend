@@ -22,7 +22,7 @@ import {
 import type { FormValues } from '@/providers/form-provider';
 
 export function SubmitButton() {
-  const { handleSubmit } = useFormContext<FormValues>();
+  const { handleSubmit, reset } = useFormContext<FormValues>();
   const router = useRouter();
 
   const [showingError, setShowingError] = useState(false);
@@ -54,10 +54,13 @@ export function SubmitButton() {
     },
     onMutate: () => setShowingError(false),
     onError: () => setShowingError(true),
-    onSuccess: () =>
+    onSuccess: () => {
+      reset();
+
       router.push(
         withoutLeadingSlash(withQuery(DEFAULT_PATHNAME, { step: 'success' })),
-      ),
+      );
+    },
   });
 
   const onValid = (formData: FormValues) => {
