@@ -8,6 +8,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 
+import { postForm } from '@/api/postForm';
 import Step1 from '@/components/steps/Step1';
 import Step2 from '@/components/steps/Step2';
 import Step3 from '@/components/steps/Step3';
@@ -93,8 +94,7 @@ export default function Form() {
     }
   };
 
-  const onSubmit = (data: RegisterSchemaType) => {
-    console.log(data);
+  const onSubmit = async (data: RegisterSchemaType) => {
     if (Steps[step] === StepType.balanceGame) {
       const hasInvalidChoice = data.situation.some((s) => s.choice === 0);
       if (hasInvalidChoice) {
@@ -105,7 +105,17 @@ export default function Form() {
         return;
       }
     }
-    router.push('/completed');
+    const formattedData = {
+      ...data,
+      situation: data.situation.map((item) => JSON.stringify(item)),
+    };
+
+    try {
+      await postForm(formattedData as any);
+      router.push('/completed');
+    } catch (error) {
+      console.error('Failed to submit form:', error);
+    }
   };
 
   return (
