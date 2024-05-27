@@ -1,13 +1,10 @@
 import { useFormContext } from 'react-hook-form';
 
-import {
-  RegisterSchema,
-  type RegisterSchemaType,
-} from '@/app/(viewport)/form/page';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Category } from '@/constants/categories';
 import { GENDERS } from '@/constants/options';
+import { RegisterSchema, type RegisterSchemaType } from '@/lib/registerSchema';
 
 export default function Step1() {
   const {

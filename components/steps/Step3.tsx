@@ -1,10 +1,10 @@
 import { useFormContext } from 'react-hook-form';
 
-import { type RegisterSchemaType } from '@/app/(viewport)/form/page';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Label } from '@/components/ui/label';
 import { Category } from '@/constants/categories';
 import { IMAGES } from '@/constants/options';
+import { type RegisterSchemaType } from '@/lib/registerSchema';
 
 export default function Step3() {
   const {

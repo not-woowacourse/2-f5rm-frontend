@@ -1,10 +1,10 @@
 import { useFormContext } from 'react-hook-form';
 
-import { type RegisterSchemaType } from '@/app/(viewport)/form/page';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Category } from '@/constants/categories';
 import { SCENARIOS } from '@/constants/options';
+import { type RegisterSchemaType } from '@/lib/registerSchema';
 
 export default function Step4() {
   const {

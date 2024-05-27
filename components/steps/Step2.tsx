@@ -1,9 +1,9 @@
 import { useFormContext } from 'react-hook-form';
 
-import { type RegisterSchemaType } from '@/app/(viewport)/form/page';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Category } from '@/constants/categories';
+import { type RegisterSchemaType } from '@/lib/registerSchema';
 
 export default function Step2() {
   const {

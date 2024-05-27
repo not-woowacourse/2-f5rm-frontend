@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { type RegisterSchemaType } from '@/app/(viewport)/form/page';
+import { type RegisterSchemaType } from '@/lib/registerSchema';
 
 const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL;
 const CLIENT_NAME = process.env.NEXT_PUBLIC_CLIENT_NAME;
