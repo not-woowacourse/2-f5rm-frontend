@@ -2,14 +2,14 @@ export const STEP_SEARCHPARAM_KEY = 'step';
 
 export const API_URL =
   process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3000';
-export const FORM_ID = process.env.NEXT_PUBLIC_FORM_ID ?? 'slug-example';
+export const FORM_SLUG = process.env.NEXT_PUBLIC_FORM_SLUG ?? 'slug-example';
 export const CLIENT_NAME =
   process.env.NEXT_PUBLIC_CLIENT_NAME ?? 'client-example';
 
 export const DEFAULT_PATHNAME = process.env.NEXT_PUBLIC_DEFAULT_PATHNAME ?? '/';
 
 export const slug = {
-  slug: FORM_ID,
+  slug: FORM_SLUG,
   questions: [
     {
       key: 'gender',
