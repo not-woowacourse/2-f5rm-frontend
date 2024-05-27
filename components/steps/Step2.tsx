@@ -8,7 +8,6 @@ import { type RegisterSchemaType } from '@/lib/registerSchema';
 export default function Step2() {
   const {
     register,
-    getValues,
     formState: { errors },
   } = useFormContext<RegisterSchemaType>();
 
