@@ -1,6 +1,9 @@
 import { useFormContext } from 'react-hook-form';
 
-import { type RegisterSchemaType } from '@/app/(viewport)/form/page';
+import {
+  RegisterSchema,
+  type RegisterSchemaType,
+} from '@/app/(viewport)/form/page';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Category } from '@/constants/categories';
@@ -22,10 +25,19 @@ export default function Step1() {
         </p>
       </Label>
       <div className="flex h-full flex-col justify-center gap-y-4">
+        {/* mbti */}
         <div>
-          <Label className="block text-sm font-medium text-gray-700">
-            MBTI
-          </Label>
+          <div className="flex gap-x-1">
+            <Label
+              className="block text-sm font-medium text-gray-700"
+              aria-required
+            >
+              MBTI
+            </Label>
+            {!RegisterSchema.shape[Category.mbti].isOptional() && (
+              <span className="text-red-600">*</span>
+            )}
+          </div>
           <Input
             id={Category.mbti}
             {...register(Category.mbti)}
@@ -35,13 +47,20 @@ export default function Step1() {
             <p className="text-sm text-red-500">{errors.mbti.message}</p>
           )}
         </div>
+
+        {/* 이름 */}
         <div>
-          <Label
-            htmlFor="name"
-            className="block text-sm font-medium text-gray-700"
-          >
-            이름
-          </Label>
+          <div className="flex gap-x-1">
+            <Label
+              htmlFor="name"
+              className="block text-sm font-medium text-gray-700"
+            >
+              이름
+            </Label>
+            {!RegisterSchema.shape[Category.name].isOptional() && (
+              <span className="text-red-600">*</span>
+            )}
+          </div>
           <Input
             id={Category.name}
             {...register(Category.name)}
@@ -51,13 +70,20 @@ export default function Step1() {
             <p className="text-sm text-red-500">{errors.name.message}</p>
           )}
         </div>
+
+        {/* 이메일 */}
         <div>
-          <Label
-            htmlFor="email"
-            className="block text-sm font-medium text-gray-700"
-          >
-            이메일
-          </Label>
+          <div className="flex gap-x-1">
+            <Label
+              htmlFor="email"
+              className="block text-sm font-medium text-gray-700"
+            >
+              이메일
+            </Label>
+            {!RegisterSchema.shape[Category.email].isOptional() && (
+              <span className="text-red-600">*</span>
+            )}
+          </div>
           <Input
             id="email"
             {...register(Category.email)}
@@ -67,11 +93,17 @@ export default function Step1() {
             <p className="text-sm text-red-500">{errors.email.message}</p>
           )}
         </div>
-        <div>
-          <Label className="block text-sm font-medium text-gray-700">
-            성별
-          </Label>
 
+        {/* 성별 */}
+        <div>
+          <div className="flex gap-x-1">
+            <Label className="block text-sm font-medium text-gray-700">
+              성별
+            </Label>
+            {!RegisterSchema.shape[Category.gender].isOptional() && (
+              <span className="text-red-600">*</span>
+            )}
+          </div>
           <select
             id={Category.gender}
             {...register(Category.gender)}
