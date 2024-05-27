@@ -57,3 +57,24 @@ export interface Metadata {
   description: string;
   items: Item[];
 }
+
+export type Recommendation = {
+  title: string;
+  description: string;
+};
+
+export type FormAnswer = {
+  id: number;
+  stringValue: string | null;
+  integerValue: number | null;
+  doubleValue: number | null;
+  booleanValue: boolean | null;
+  dateValue: string | null;
+  question: {
+    id: number;
+    key: string;
+    type: string;
+    isArray: boolean;
+    isOptional: boolean;
+  };
+};
