@@ -3,6 +3,8 @@ import localFont from 'next/font/local';
 
 import { type PropsWithChildren } from 'react';
 
+import { Toaster } from '@/components/ui/toaster';
+import { FormProvider } from '@/providers/form-provider';
 import QueryProvider from '@/providers/query-provider';
 
 import './globals.css';
@@ -20,9 +22,14 @@ const metadata: Metadata = {
 const RootLayout = ({ children }: PropsWithChildren) => {
   return (
     <html lang="ko-KR">
-      <QueryProvider>
-        <body className={wantedSansVariable.className}>{children}</body>
-      </QueryProvider>
+      <body className={wantedSansVariable.className}>
+        <main className="mx-auto flex h-screen w-screen max-w-sm flex-col break-keep bg-green-300">
+          <QueryProvider>
+            <FormProvider>{children}</FormProvider>
+          </QueryProvider>
+        </main>
+        <Toaster />
+      </body>
     </html>
   );
 };
