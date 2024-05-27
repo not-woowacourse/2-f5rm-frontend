@@ -8,6 +8,7 @@ import { Category } from '@/constants/categories';
 export default function Step2() {
   const {
     register,
+    getValues,
     formState: { errors },
   } = useFormContext<RegisterSchemaType>();
 
@@ -41,9 +42,14 @@ export default function Step2() {
           <Input
             type="number"
             id={Category.age}
+            min={20}
+            max={100}
             {...register(Category.age)}
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
           />
+          {errors.age && (
+            <p className="text-sm text-red-500">{errors.age.message}</p>
+          )}
         </div>
         <div>
           <Label className="block text-sm font-medium text-gray-700">

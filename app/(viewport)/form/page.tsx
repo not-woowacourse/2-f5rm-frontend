@@ -15,20 +15,26 @@ import Step3 from '@/components/steps/Step3';
 import Step4 from '@/components/steps/Step4';
 import { Button } from '@/components/ui/button';
 import {
+  AdditionalCategories,
   BalanceGameCategories,
   BasicInformationCategories,
+  Category,
   ErrorMessages,
   SelfPromotionCategories,
 } from '@/constants/categories';
 import { StepType, Steps } from '@/constants/steps';
 
-const RegisterSchema = z.object({
+export const RegisterSchema = z.object({
   mbti: z.string().min(1, { message: ErrorMessages.mbti }),
   name: z.string().min(1, { message: ErrorMessages.name }),
   gender: z.string().min(1, { message: ErrorMessages.gender }),
   email: z.string().email(ErrorMessages.email),
   instagramId: z.string(),
-  age: z.coerce.number(),
+  age: z.coerce
+    .number()
+    .min(20, { message: ErrorMessages.age })
+    .max(100)
+    .optional(),
   type: z.string().optional(),
   animal: z.string().min(1, { message: ErrorMessages.animal }),
   situation: z
@@ -69,6 +75,9 @@ export default function Form() {
     switch (step) {
       case 0:
         return BasicInformationCategories;
+      case 1:
+        if (methods.getValues(Category.age)) return AdditionalCategories;
+        else return [];
       case 2:
         return SelfPromotionCategories;
       case 3:
@@ -98,7 +107,7 @@ export default function Form() {
     if (Steps[step] === StepType.balanceGame) {
       const hasInvalidChoice = data.situation.some((s) => s.choice === 0);
       if (hasInvalidChoice) {
-        methods.setError('situation', {
+        methods.setError(Category.situation, {
           type: 'manual',
           message: ErrorMessages.situation,
         });
