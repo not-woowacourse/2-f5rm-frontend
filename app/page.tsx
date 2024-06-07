@@ -20,16 +20,16 @@ export default function HomePage({ searchParams: { step } }: HomePageProps) {
   if (step === undefined) return <Landing />;
 
   // "/?step=3&step=4"
-  if (typeof step !== 'string') redirect(DEFAULT_PATHNAME);
+  if (Array.isArray(step)) redirect(DEFAULT_PATHNAME);
 
   // "/?step=success"
   if (step === 'success') return <Success />;
 
   // here I'm not using parseInt since parseInt("123abc", 10) === 123
-  const stepNumber = +step;
+  const stepNumber = Number(step);
 
   // "/?step=foobar" / "/?step=0.5"
-  if (isNaN(stepNumber) || Math.floor(stepNumber) !== stepNumber)
+  if (isNaN(stepNumber) || Number.isInteger(stepNumber) === false)
     redirect(DEFAULT_PATHNAME);
 
   // "/?step=-1" / "?step=11" (step:0~9)
