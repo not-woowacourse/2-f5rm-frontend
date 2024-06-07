@@ -1,5 +1,7 @@
 import { redirect } from 'next/navigation';
 
+import { withoutLeadingSlash } from 'ufo';
+
 import { Confirm } from '@/components/Pages/Confirm';
 import { FormLayout } from '@/components/Pages/FormLayout';
 import { Landing } from '@/components/Pages/Landing';
@@ -20,7 +22,7 @@ export default function HomePage({ searchParams: { step } }: HomePageProps) {
   if (step === undefined) return <Landing />;
 
   // "/?step=3&step=4"
-  if (Array.isArray(step)) redirect(DEFAULT_PATHNAME);
+  if (Array.isArray(step)) redirect(withoutLeadingSlash(DEFAULT_PATHNAME));
 
   // "/?step=success"
   if (step === 'success') return <Success />;
@@ -30,11 +32,11 @@ export default function HomePage({ searchParams: { step } }: HomePageProps) {
 
   // "/?step=foobar" / "/?step=0.5"
   if (isNaN(stepAsNumber) || Number.isInteger(stepAsNumber) === false)
-    redirect(DEFAULT_PATHNAME);
+    redirect(withoutLeadingSlash(DEFAULT_PATHNAME));
 
   // "/?step=-1" / "?step=11" (step:0~9)
   if (stepAsNumber < 0 || stepAsNumber > items.length)
-    redirect(DEFAULT_PATHNAME);
+    redirect(withoutLeadingSlash(DEFAULT_PATHNAME));
 
   // "/?step=10" (step: 0~9)
   if (stepAsNumber === items.length) return <Confirm />;
