@@ -1,27 +1,46 @@
-import { cn } from '@/lib/utils';
+import { redirect } from 'next/navigation';
 
-const RootPage = () => {
-  return (
-    <main
-      className={cn(
-        'h-screen w-screen',
-        'flex flex-col items-center justify-center',
-        'bg-neutral-50',
-      )}
-    >
-      <button
-        className={cn(
-          'flex flex-col items-center justify-center gap-10',
-          'hover:scale-110',
-          'active:scale-100',
-          'transition-transform',
-        )}
-      >
-        <p className="text-8xl">👋</p>
-        <p className="text-4xl font-bold">Hello World</p>
-      </button>
-    </main>
-  );
-};
+import { withoutLeadingSlash } from 'ufo';
 
-export default RootPage;
+import { Confirm } from '@/components/Pages/Confirm';
+import { FormLayout } from '@/components/Pages/FormLayout';
+import { Landing } from '@/components/Pages/Landing';
+import { Success } from '@/components/Pages/Success';
+import {
+  DEFAULT_PATHNAME,
+  type STEP_SEARCHPARAM_KEY,
+} from '@/constants/constants';
+import { metadata } from '@/constants/metadata';
+import type { NextAppPage } from '@/types/next';
+
+type HomePageProps = NextAppPage<typeof STEP_SEARCHPARAM_KEY>;
+
+export default function HomePage({ searchParams: { step } }: HomePageProps) {
+  const { items } = metadata;
+
+  // "/"
+  if (step === undefined) return <Landing />;
+
+  // "/?step=3&step=4"
+  if (Array.isArray(step)) redirect(withoutLeadingSlash(DEFAULT_PATHNAME));
+
+  // "/?step=success"
+  if (step === 'success') return <Success />;
+
+  // here I'm not using parseInt since parseInt("123abc", 10) === 123
+  const stepAsNumber = Number(step);
+
+  // "/?step=foobar" / "/?step=0.5"
+  if (isNaN(stepAsNumber) || Number.isInteger(stepAsNumber) === false)
+    redirect(withoutLeadingSlash(DEFAULT_PATHNAME));
+
+  // "/?step=-1" / "?step=11" (step:0~9)
+  if (stepAsNumber < 0 || stepAsNumber > items.length)
+    redirect(withoutLeadingSlash(DEFAULT_PATHNAME));
+
+  // "/?step=10" (step: 0~9)
+  if (stepAsNumber === items.length) return <Confirm />;
+
+  // "/?step=5" (step: 0~9)
+  return <FormLayout step={stepAsNumber} />;
+}

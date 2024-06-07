@@ -1,13 +1,17 @@
+import { te6TailwindPreset } from '@te6/ui';
 import type { Config } from 'tailwindcss';
+import { teal, zinc } from 'tailwindcss/colors';
+import { fontFamily } from 'tailwindcss/defaultTheme';
 
 const config = {
-  darkMode: ['class'],
   content: [
     './pages/**/*.{ts,tsx}',
     './components/**/*.{ts,tsx}',
     './app/**/*.{ts,tsx}',
     './src/**/*.{ts,tsx}',
+    './node_modules/@te6/ui/dist/index.js',
   ],
+  presets: [te6TailwindPreset],
   prefix: '',
   theme: {
     container: {
@@ -18,16 +22,32 @@ const config = {
       },
     },
     extend: {
+      height: {
+        // @ts-expect-error
+        screen: ['100vh', '100dvh'],
+      },
+      fontFamily: {
+        sans: [
+          'Ubuntu\\ Sans',
+          'Pretendard Variable',
+          'Pretendard',
+          ...fontFamily.sans,
+        ],
+      },
       colors: {
+        body: {
+          DEFAULT: zinc[50],
+          dark: zinc[950],
+        },
+        base: zinc,
+        'base-dark': zinc,
+        primary: teal,
+        accent: teal,
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
-        primary: {
-          DEFAULT: 'hsl(var(--primary))',
-          foreground: 'hsl(var(--primary-foreground))',
-        },
         secondary: {
           DEFAULT: 'hsl(var(--secondary))',
           foreground: 'hsl(var(--secondary-foreground))',
@@ -40,10 +60,6 @@ const config = {
           DEFAULT: 'hsl(var(--muted))',
           foreground: 'hsl(var(--muted-foreground))',
         },
-        accent: {
-          DEFAULT: 'hsl(var(--accent))',
-          foreground: 'hsl(var(--accent-foreground))',
-        },
         popover: {
           DEFAULT: 'hsl(var(--popover))',
           foreground: 'hsl(var(--popover-foreground))',
@@ -52,11 +68,6 @@ const config = {
           DEFAULT: 'hsl(var(--card))',
           foreground: 'hsl(var(--card-foreground))',
         },
-      },
-      borderRadius: {
-        lg: 'var(--radius)',
-        md: 'calc(var(--radius) - 2px)',
-        sm: 'calc(var(--radius) - 4px)',
       },
       keyframes: {
         'accordion-down': {

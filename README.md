@@ -1,66 +1,25 @@
-# 구현과제 2. Surveey
+# 배포
 
-> 이 과제는 [스모어](https://home.smore.im/template?type=form&c=survey)를 모티브로 제작되었습니다.
+[✨ not-woowacourse.te6.in/survey](https://not-woowacourse.te6.in/survey)
 
-## 유의사항
+# 강조할 부분
 
-**읽기 좋은 코드**에 집중해주세요.
+metadata 객체 하나만 수정하면 모든 폼 구성이 동적으로 이루어질 수 있도록 하는 것을 중점으로 구현해 보았습니다.
 
-- 기능의 정상 동작 여부
-- 작성하는 코드의 퀄리티
-- Git 관리 수준
-- PR, 코드 리뷰 방식
+직접 만든 [@te6/ui](https://www.npmjs.com/package/@te6/ui)의 인풋 컴포넌트들이 react-hook-form 사용을 전제하고 만들어졌기에 이번에는 있는 컴포넌트를 가져다 사용했습니다. 덕분에 다크 모드도 지원하고 디자인에는 거의 시간을 들이지 않을 수 있었습니다.
 
-최소 기능 구현만 만족하면 **자유롭게 커스텀**이 가능합니다.
+폼이라는 점에서 클라이언트 컴포넌트가 커버하는 범위가 클 수밖에 없지만, 그럼에도 최대한 서버에서 렌더링하는 컴포넌트의 수를 확보하고자 했습니다.
 
-- 디자인 커스텀 가능 (@shadcn/ui 안 써도 됨)
-- 폴더 구조 커스텀 가능
-- 코드 컨벤션 커스텀 가능
-- 의존성 설치 및 삭제 가능
+# 부족한 부분
 
-**README 작성**은 필수입니다.
+Multiselect(체크박스 여러 개)나 field array같은 인풋은 `mode`를 `onChange`로, 나머지 일반 input은 `onBlur`로 설정하고 싶었는데 useForm의 파라미터에 하나로 묶여 있어서 아직은 직접 이벤트 리스너를 등록해서 원할 때마다 `trigger()`를 실행시키지 않는 이상 불가능한 것 같습니다.
 
-- 자신의 코드에서 강조할 부분
-- 자신의 코드에서 부족한 부분
-- 기타 코드를 이해하는데 도움을 주는 내용
+따라서 일단은 `onChange`가 일어날 때마다 validate하도록 해 두었는데, 폼 안에서 이것저것 계산하는 코드가 존재해서 폼이 커지면 퍼포먼스에 악영향이 있을 것 같습니다. ㅠㅠ
 
-Fork & PR 등 과제 진행과 관련된 내용은,  
- [우테코 따라잡기 노션 - 구현과제 진행 관련 유의사항](https://yopark.notion.site/08c99780759944118452d77b6927775a) 문서를 참고해주세요.
+백엔드 API와 `metadata.items`의 형태를 약간이나마 비슷하게 맞췄으면 개발하기 조금 더 수월했을 것 같다는 생각도 듭니다.
 
-배포 이후 **배포 주소**를 말씀해주시면 해당 주소를 CORS에 추가하도록 하겠습니다.
+# 이해하는 데에 도움을 주는 내용
 
-## API
+설문 제목, 질문 내용, 답변 형식(Zod 스키마)을 포함한 대부분의 내용이 하나의 객체(metadata)에서 관리됩니다. 이때 이 객체가 Zod 스키마 자체가 아니고, Zod 스키마를 `restrictions`에 담은 다양한 내용을 담은 object이기 때문에 @hookform/resolvers의 `zodResolver`가 알아들을 수 있는 형태로 변환해주는 과정이 필요했습니다.
 
-API 주소 : https://not-woowacourse-api.yopark.dev
-
-자세한 내용은 [Swagger](https://not-woowacourse-api.yopark.dev/api-docs)를 참고해주세요.
-
-이번 과제에서 사용할 API는 **0.x(공통), 2.x(Surveey)** 입니다.
-
-> ❗️ Swagger만 읽고서는 2.x API를 이해하기 힘드실 것 같습니다.  
-> [우테코 따라잡기 노션 - 2.x API (Schema, Form) 상세 사용 방법](https://yopark.notion.site/2-x-API-Schema-Form-ac2229daeb954f60be5b383e72fc8ae3)을 함께 읽어주세요.
-
-> 이걸 만든 사람은 백엔드 개발자가 아닙니다. 사용해보시고 오류나 빈틈이 있으면 채널톡 부탁드립니다 😭
-
-## 구현해야 할 기능
-
-> Surveey 시연 링크 : https://not-woowacourse-2-surveey-frontend-for-example.vercel.app  
-> Surveey 시연 레포 : https://github.com/yoopark/not-woowacourse-2-surveey-frontend-for-example
-
-나만의 설문조사를 만들어봅시다 ✨
-
-단, 다음의 제약사항을 지켜주세요.
-
-- 설문 진행은 퍼널 뷰로 이루어져야 합니다. 한 화면에는 한 문항만 보여야 합니다.
-- 설문 문항 개수는 5개 이상이어야 합니다.
-- 조건에 맞지 않는 입력의 경우, 에러가 명시적으로 표현되어야 하며 다음 스텝으로 넘어갈 수 없어야 합니다.
-- 필수/선택이 명시적으로 표현되어야 합니다.
-
-> 토스 제품 디자인 원칙(PP: Product Principle)엔 “One thing for One Page”라는 원칙이 있어요. 화면 하나에는 명확한 목표 하나만 있어야 한다는 건데요. 이 원칙에 따라 제품을 만들다 보면 ‘퍼널’이 많이 생깁니다. 토스페이먼츠의 제품도 예외는 아니에요. 그래서 저희 프론트엔드 개발자들은 퍼널의 흐름을 잘 관리해야 하죠. 퍼널이란 사용자가 웹사이트나 애플리케이션을 방문해서 최종 목표까지 달성하는데 거치는 단계를 뜻합니다. [출처](https://toss.tech/article/engineering-note-1)
-
-> Surveey 제출 확인용 어드민 : https://not-woowacourse-2-surveey-admin.yopark.dev
-
-## 기술 스택 관련 제한사항
-
-- React Hook Form, Zod를 충실히 사용해주세요.
-- 퍼널 뷰 제작 시 @toss/use-funnel을 사용하지 말아주세요.
+또한 multiselect 종류의 문항의 경우 `restrictions`를 두는 대신 `options` 배열의 항목에서 `required`로 넘겨준 불리언 값을 `zodResolver`에 먹여주기 직전에 Zod 스키마를 생성합니다. (이것들이 딱히 직관적인 방법인지는 잘 모르겠습니다. form-provider.tsx 참고 부탁드립니다!)
