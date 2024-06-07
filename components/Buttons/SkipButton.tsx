@@ -24,16 +24,10 @@ export function SkipButton({ step, item }: SkipButtonProps) {
   const router = useRouter();
   const [showConfirm, setShowConfirm] = useState(false);
 
-  const { setValue } = useFormContext<FormValues>();
+  const { resetField } = useFormContext<FormValues>();
 
   const onClick = () => {
-    if (item.answer.type === 'multiselect') {
-      item.answer.options.forEach((option) =>
-        setValue(`${item.id}.${option.id}`, false),
-      );
-    } else {
-      setValue(item.id, undefined);
-    }
+    resetField(item.id);
 
     router.push(
       withoutLeadingSlash(withQuery(DEFAULT_PATHNAME, { step: step + 1 })),
